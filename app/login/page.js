@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import styles from "./page.module.css";
-export default function Home(){
+import styles from "../page.module.css";
+export default function Login(){
     return(
       <main className="page">
           <form className="form"> 
@@ -29,13 +29,6 @@ export default function Home(){
                     Sign Up
                   </Link>
                 </p>
-                <div>
-            <h1>Welcome to Placeholder Name</h1>
-            <p>Discover and book amazing events.</p>
-            <Link href="/events">
-                <button>Browse Events</button>
-            </Link>
-        </div>
               </div>
           </form>
       </main>
