@@ -1,6 +1,37 @@
 import Link from "next/link";
+import { useState } from "react"
+import { validateName,validateEmail,validatePassword,validateConfirmPassword,validateAccountType } from "../lib/validation";
 
 export default function SignupPage() {
+       const[fields, setFields] = useState({
+                name: "",
+                email : "",
+                password : "",
+                confirmPassword : "",
+                role:" ",
+        })
+        const [errors, setErrors] = useState({});
+
+        function handleChange(e){
+            //using spread operator to keep existing field values and overwrite only the field that is changed
+            const {name , value } = e.target;
+            setFields((prev) => ({ ...prev, [name]:value}));
+
+            setFields((prev) => ({ ...prev, [name]: ""}));
+        }
+
+        function handleSubmit(e){
+            e.preventDefault();
+            const newErrors = {
+                name: validateName(fields.name),
+                email: validateEmail(fields.email),
+                password: validatePassword (fields.password),
+                confirmPassword: validateConfirmPassword (fields.password,fields.confirmPassword),
+                name: validateAccountType(fields.role),
+            };
+            setErrors(newErrors);
+            if(newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword || newErrors.role)return;
+        }
     return (
         <main className="auth-page">
             <form className="auth-form" action="/api/auth/signup" method="POST">
@@ -11,39 +42,50 @@ export default function SignupPage() {
                     type="text"
                     name="name"
                     placeholder="Your Full Name"
-                    required
+                    value={fields.name}
+                    onChange={handleChange}
                 />
+                {errors.name && <span className="error">{errors.name}</span>}
 
                 <label>Email</label>
                 <input
                     type="email"
                     name="email"
                     placeholder="Your email"
-                    required
+                    value={fields.email}
+                    onChange={handleChange}
                 />
+                {errors.email && <span className="error">{errors.email}</span>}
 
                 <label>Password</label>
                 <input
                     type="password"
                     name="password"
                     placeholder="Min. 8 characters"
-                    required
+                    value={fields.password}
+                    onChange={handleChange}
                 />
+                {errors.password && <span className="error">{errors.password}</span>}
 
                 <label>Confirm Password</label>
                 <input
                     type="password"
-                    name="password"
+                    name="confirmPassword"
                     placeholder="Min. 8 characters"
-                    required
+                    value={fields.confirmPassword}
+                    onChange={handleChange}
                 />
+                {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
+
 
                 <label>I am an...</label>
-
-                <select name="role">
+                <select name="role" value={fields.role} onChange={handleChange}>
+                    <option value=""> Select a role</option>
                     <option value="attendee">Attendee</option>
                     <option value="organizer">Organizer</option>
                 </select>
+                {errors.role && <span className="error">{errors.role}</span>}
+
 
                 <button type="submit">Create Account</button>
 

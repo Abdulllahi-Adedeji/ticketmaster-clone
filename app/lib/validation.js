@@ -18,10 +18,10 @@ export function validateName(value){
 }
 
 export function validateEmail(value){
-    const clean = sanitize(value.trim().toLowerCase());
+    const clean = value.trim().toLowerCase();
     if(!clean) 
         return "Email is required. ";
-    if( /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(clean)) return "Enter a valid Email address .";
+    if(! /^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(clean)) return "Enter a valid Email address .";
     return "";
 }
 
@@ -46,3 +46,4 @@ export function validateAccountType(value){
         return "Please select an account type.";
     return "";
 }
+
