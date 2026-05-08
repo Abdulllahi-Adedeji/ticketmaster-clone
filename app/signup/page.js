@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { useState } from "react"
 import { validateName,validateEmail,validatePassword,validateConfirmPassword,validateAccountType } from "../lib/validation";
@@ -17,7 +18,7 @@ export default function SignupPage() {
             const {name , value } = e.target;
             setFields((prev) => ({ ...prev, [name]:value}));
 
-            setFields((prev) => ({ ...prev, [name]: ""}));
+            setErrors((prev) => ({ ...prev, [name]: ""}));
         }
 
         function handleSubmit(e){
@@ -27,14 +28,15 @@ export default function SignupPage() {
                 email: validateEmail(fields.email),
                 password: validatePassword (fields.password),
                 confirmPassword: validateConfirmPassword (fields.password,fields.confirmPassword),
-                name: validateAccountType(fields.role),
+                role: validateAccountType(fields.role),
             };
             setErrors(newErrors);
             if(newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword || newErrors.role)return;
         }
+
     return (
         <main className="auth-page">
-            <form className="auth-form" action="/api/auth/signup" method="POST">
+            <form className="auth-form"  onSubmit={handleSubmit}>
                 <h2>Create an Account</h2>
 
                 <label>Full Name</label>
@@ -61,7 +63,7 @@ export default function SignupPage() {
                 <input
                     type="password"
                     name="password"
-                    placeholder="Min. 8 characters"
+                    placeholder="Enter your Password(Min. 8 characters)"
                     value={fields.password}
                     onChange={handleChange}
                 />
@@ -90,7 +92,7 @@ export default function SignupPage() {
                 <button type="submit">Create Account</button>
 
                 <p className="auth-footer">
-                    Already have an account? <Link href="/login">Sign In</Link>
+                    Already have an account? <Link href="/sign-in">Sign In</Link>
                 </p>
             </form>
         </main>
