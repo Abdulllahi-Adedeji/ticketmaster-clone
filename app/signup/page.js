@@ -5,13 +5,14 @@ import { validateName,validateEmail,validatePassword,validateConfirmPassword,val
 
 export default function SignupPage() {
        const[fields, setFields] = useState({
-                name: "",
+                userName: "",
                 email : "",
                 password : "",
                 confirmPassword : "",
-                role:" ",
+                userType:" ",
         })
         const [errors, setErrors] = useState({});
+        const [successMsg, setSuccessMsg] = useState("");
 
         function handleChange(e){
             //using spread operator to keep existing field values and overwrite only the field that is changed
@@ -21,17 +22,34 @@ export default function SignupPage() {
             setErrors((prev) => ({ ...prev, [name]: ""}));
         }
 
-        function handleSubmit(e){
+        async function handleSubmit(e){
             e.preventDefault();
             const newErrors = {
-                name: validateName(fields.name),
+                userName: validateName(fields.userName),
                 email: validateEmail(fields.email),
                 password: validatePassword (fields.password),
                 confirmPassword: validateConfirmPassword (fields.password,fields.confirmPassword),
-                role: validateAccountType(fields.role),
+                userType: validateAccountType(fields.userType),
             };
             setErrors(newErrors);
             if(newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword || newErrors.role)return;
+
+            // send data to POST for validation (and user signup)
+            const res = await fetch("/api/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(fields),
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                // submission was successful
+                setSuccessMsg("Succesfully signed up!");
+                setErrors({});
+            } else {
+                setErrors(result.errors || {global: result.message || "An error occurred" });
+            }
         }
 
     return (
@@ -42,7 +60,7 @@ export default function SignupPage() {
                 <label>Full Name</label>
                 <input
                     type="text"
-                    name="name"
+                    name="userName"
                     placeholder="Your Full Name"
                     value={fields.name}
                     onChange={handleChange}
@@ -81,7 +99,7 @@ export default function SignupPage() {
 
 
                 <label>I am an...</label>
-                <select name="role" value={fields.role} onChange={handleChange}>
+                <select name="userType" value={fields.role} onChange={handleChange}>
                     <option value=""> Select a role</option>
                     <option value="attendee">Attendee</option>
                     <option value="organizer">Organizer</option>
