@@ -30,6 +30,7 @@ export default function AtendeeSignupPage() {
             };
             setErrors(newErrors);
             if(newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword)return;
+            
         }
 
     return (

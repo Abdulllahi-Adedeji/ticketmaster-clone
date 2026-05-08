@@ -9,6 +9,7 @@ export default function Navbar() {
                 <li><Link href="/sign-in" className="nav-btn">Login</Link></li>
                 <li><Link href="/signup/attendee" className="nav-btn">SignUp as Attendee</Link></li>
                 <li><Link href="/signup/staff" className="nav-btn">SignUp as Staff</Link></li>
+                <li><Link href="/settings" className="nav-btn">Settings</Link></li>
             </ul>
         </nav>
     )

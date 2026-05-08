@@ -36,7 +36,12 @@ body {
   padding: 0;
   margin: 0;
 }
-
+input{
+  width:10vw;
+}
+.error{
+  color: red;
+}
 a {
   color: inherit;
   text-decoration: none;
