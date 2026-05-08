@@ -1,8 +1,4 @@
 import Link from 'next/link'
-<<<<<<< HEAD
-
-=======
->>>>>>> 22f425f9f48e11e82080db000a03151170b26b4f
 export default function Navbar() {
     return (
         <nav className="navbar">
