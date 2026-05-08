@@ -1,6 +1,6 @@
 import pool from "../../lib/db";
 import bcrypt from "bcryptjs";
-import { validateInput, sanitizeData } from "../../lib/validation";
+import { validateUser, sanitizeUser } from "../../lib/validation";
 
 async function register(cleanData) {
     try {
@@ -39,7 +39,7 @@ export async function POST(request) {
     try {
         const body = await request.json();
 
-        const validationCheck = validateInput(body);
+        const validationCheck = validateUser(body);
         if (!validationCheck.isValid) {
             return Response.json({
                 errors: validationCheck.errors,
@@ -47,9 +47,7 @@ export async function POST(request) {
             }, { status: 400 });
         }
 
-        const cleanData = sanitizeData(body, "user");
-        console.log("body:", body);
-        console.log("cleanData:", cleanData);
+        const cleanData = sanitizeUser(body);
         const result = await register(cleanData);
 
         if (!result.success) {

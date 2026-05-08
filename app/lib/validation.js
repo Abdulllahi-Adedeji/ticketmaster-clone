@@ -1,21 +1,40 @@
 /* Backend Validation */
-// "INSERT INTO Users (Username, Email, Password, UserType, CreatedAt",
 
-export function validateInput(data) {
-    // store errors here
+export function validateUser(data) {
     const errors = {};
 
-    if (data.userName.length > 32) {
-        errors.userName = "Invalid Username! Must be less than 32 characters.";
+    if (!data.username || data.username.length > 32) {
+        errors.username = "Invalid Username! Must be less than 32 characters.";
     }
 
-    // regex for email (something.something@gmail.com)
     const emailRegex = /[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(data.email)) {
+    if (!data.email || !emailRegex.test(data.email)) {
         errors.email = "Invalid email address. Please try again";
     }
 
-    if (data.password.length < 8) {
+    if (!data.password || data.password.length < 8) {
+        errors.password = "Password must be minimum 8 characters.";
+    }
+
+    if (!data.usertype) {
+        errors.usertype = "Please select an account type.";
+    }
+
+    return {
+        isValid: Object.keys(errors).length === 0,
+        errors
+    }
+}
+
+export function validateLogin(data) {
+    const errors = {};
+
+    const emailRegex = /[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$/;
+    if (!data.email || !emailRegex.test(data.email)) {
+        errors.email = "Invalid email address. Please try again";
+    }
+
+    if (!data.password || data.password.length < 8) {
         errors.password = "Password must be minimum 8 characters.";
     }
 
@@ -25,35 +44,29 @@ export function validateInput(data) {
     }
 }
 
-export function sanitizeData(data, type) {
-
-    // helper function
+export function sanitizeUser(data) {
     const clean = (str) => {
-        // if data given is not a string, return back the data
-        if (typeof str !== 'string') {
-            return str;
-        }
-
-        // replace opening and closing tags to prevent HTML code
-        return str
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
+        if (typeof str !== 'string') return str;
+        return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     };
 
-    if (type == "user") {
-        return {
-            userName: clean(data.userName),
-            email: clean(data.email),
-            password: clean(data.password),
-            userType: clean(data.userType),
-            createdAt: data.createdAt // no string input
-        }
+    return {
+        username: clean(data.username),
+        email: clean(data.email).toLowerCase(),
+        password: clean(data.password),
+        usertype: clean(data.usertype),
     }
-    if (type == "event") {
-        return {}
-    }
-    if (type == "admin") {
-        return {}
+}
+
+export function sanitizeLogin(data) {
+    const clean = (str) => {
+        if (typeof str !== 'string') return str;
+        return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    };
+
+    return {
+        email: clean(data.email).toLowerCase(),
+        password: clean(data.password),
     }
 }
 
