@@ -1,6 +1,6 @@
-import Image from "next/image";
+
 import Link from "next/link";
-import styles from "./page.module.css";
+import { validateEmail, validatePassword } from "../lib/validation";
 export default function Home(){
     return(
       <main className="page">
@@ -14,15 +14,16 @@ export default function Home(){
               <input type="email" placeholder="Enter your email" />
 
               <label>Password</label>
-              <input type="password" placeholder="Enter your email" />
+              <input type="password" placeholder="Enter your Password" />
 
+         
 
               {/* Sign in button */}
               <Link href ="/signin">
                 <button>Sign In </button>
               </Link>
 
-              <div className=" bottom-text">
+              <div>
                 <p>
                   Don't have an account ? {" "}
                   <Link href ="/signup" >
