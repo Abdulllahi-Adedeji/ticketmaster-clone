@@ -1,15 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react"
-import { validateName,validateEmail,validatePassword,validateConfirmPassword,validateAccountType } from "../lib/validation";
+import { validateName,validateEmail,validatePassword,validateConfirmPassword } from "../../lib/validation";
 
-export default function SignupPage() {
+export default function AtendeeSignupPage() {
        const[fields, setFields] = useState({
                 name: "",
                 email : "",
                 password : "",
                 confirmPassword : "",
-                role:" ",
         })
         const [errors, setErrors] = useState({});
 
@@ -27,17 +26,16 @@ export default function SignupPage() {
                 name: validateName(fields.name),
                 email: validateEmail(fields.email),
                 password: validatePassword (fields.password),
-                confirmPassword: validateConfirmPassword (fields.password,fields.confirmPassword),
-                role: validateAccountType(fields.role),
+                confirmPassword: validateConfirmPassword (fields.password,fields.confirmPassword)
             };
             setErrors(newErrors);
-            if(newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword || newErrors.role)return;
+            if(newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword)return;
         }
 
     return (
         <main className="auth-page">
             <form className="auth-form"  onSubmit={handleSubmit}>
-                <h2>Create an Account</h2>
+                <h2>Sign Up as Staff </h2>
 
                 <label>Full Name</label>
                 <input
@@ -78,15 +76,6 @@ export default function SignupPage() {
                     onChange={handleChange}
                 />
                 {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
-
-
-                <label>I am an...</label>
-                <select name="role" value={fields.role} onChange={handleChange}>
-                    <option value=""> Select a role</option>
-                    <option value="attendee">Attendee</option>
-                    <option value="organizer">Organizer</option>
-                </select>
-                {errors.role && <span className="error">{errors.role}</span>}
 
 
                 <button type="submit">Create Account</button>
