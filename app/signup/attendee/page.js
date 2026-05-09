@@ -1,52 +1,76 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react"
-import { validateName,validateEmail,validatePassword,validateConfirmPassword } from "../../lib/validation";
+import { validateName, validateEmail, validatePassword, validateConfirmPassword } from "../../lib/validation";
 
 export default function AtendeeSignupPage() {
-       const[fields, setFields] = useState({
-                name: "",
-                email : "",
-                password : "",
-                confirmPassword : "",
-        })
-        const [errors, setErrors] = useState({});
+    const [fields, setFields] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+    const [errors, setErrors] = useState({});
+    const [successMsg, setSuccessMsg] = useState("");
 
-        function handleChange(e){
-            //using spread operator to keep existing field values and overwrite only the field that is changed
-            const {name , value } = e.target;
-            setFields((prev) => ({ ...prev, [name]:value}));
+    function handleChange(e) {
+        const { name, value } = e.target;
+        //using spread operator to keep existing field values and overwrite only the field that is changed
+        setFields((prev) => ({ ...prev, [name]: value }));
+        setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
 
-            setErrors((prev) => ({ ...prev, [name]: ""}));
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const newErrors = {
+            username: validateName(fields.username),
+            email: validateEmail(fields.email),
+            password: validatePassword(fields.password),
+            confirmPassword: validateConfirmPassword(fields.password, fields.confirmPassword),
+        };
+        setErrors(newErrors);
+        if (newErrors.username || newErrors.email || newErrors.password || newErrors.confirmPassword) return;
+
+        // send to register API
+        const res = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: fields.username,
+                email: fields.email,
+                password: fields.password,
+                usertype: "attendee", // hardcoded since this is attendee signup
+            }),
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            // TODO: redirect to login page
+            setSuccessMsg("Successfully signed up!");
+            setErrors({});
+        } else {
+            setErrors(result.errors || { global: result.message || "An error occurred" });
         }
-
-        function handleSubmit(e){
-            e.preventDefault();
-            const newErrors = {
-                name: validateName(fields.name),
-                email: validateEmail(fields.email),
-                password: validatePassword (fields.password),
-                confirmPassword: validateConfirmPassword (fields.password,fields.confirmPassword)
-            };
-            setErrors(newErrors);
-            if(newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword)return;
-            
-        }
+    }
 
     return (
         <main className="auth-page">
-            <form className="auth-form"  onSubmit={handleSubmit}>
-                <h2>Sign Up as Staff </h2>
+            <form className="auth-form" onSubmit={handleSubmit}>
+                <h2>Sign Up as Attendee</h2>
+
+                {successMsg && <p className="success">{successMsg}</p>}
+                {errors.global && <span className="error">{errors.global}</span>}
 
                 <label>Full Name</label>
                 <input
                     type="text"
-                    name="name"
+                    name="username"
                     placeholder="Your Full Name"
-                    value={fields.name}
+                    value={fields.username}
                     onChange={handleChange}
                 />
-                {errors.name && <span className="error">{errors.name}</span>}
+                {errors.username && <span className="error">{errors.username}</span>}
 
                 <label>Email</label>
                 <input
@@ -62,7 +86,7 @@ export default function AtendeeSignupPage() {
                 <input
                     type="password"
                     name="password"
-                    placeholder="Enter your Password(Min. 8 characters)"
+                    placeholder="Enter your Password (Min. 8 characters)"
                     value={fields.password}
                     onChange={handleChange}
                 />
@@ -77,7 +101,6 @@ export default function AtendeeSignupPage() {
                     onChange={handleChange}
                 />
                 {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
-
 
                 <button type="submit">Create Account</button>
 

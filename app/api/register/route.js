@@ -10,10 +10,6 @@ async function register(cleanData) {
             [cleanData.email]
         );
 
-        if (rows.length > 0) {
-            return { success: false, message: "Email already in use." };
-        }
-
         // hash password
         const hashedPassword = await bcrypt.hash(cleanData.password, 10);
 
@@ -21,16 +17,25 @@ async function register(cleanData) {
         const [newUser] = await pool.execute(
             "INSERT INTO Users (Username, Email, Password, UserType, CreatedAt) VALUES (?, ?, ?, ?, NOW())",
             [
-                cleanData.userName,
+                cleanData.username,
                 cleanData.email,
                 hashedPassword,
-                cleanData.userType,
+                cleanData.usertype,
             ]
         );
 
         return { success: true, userID: newUser.insertId };
 
     } catch (err) {
+        // MySQL duplicate entry error code
+        if (err.code === 'ER_DUP_ENTRY') {
+            if (err.message.includes('Username')) {
+                return { success: false, message: "Username already in use.", status: 409 };
+            }
+            if (err.message.includes('Email')) {
+                return { success: false, message: "Email already in use.", status: 409 };
+            }
+        }
         throw err;
     }
 }
@@ -51,9 +56,10 @@ export async function POST(request) {
         const result = await register(cleanData);
 
         if (!result.success) {
-            return Response.json({
-                message: result.message,
-            }, { status: 400 });
+            return Response.json(
+                { message: result.message },
+                { status: result.status || 400 }
+            );
         }
 
         return Response.json({

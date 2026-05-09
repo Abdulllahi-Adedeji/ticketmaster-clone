@@ -1,71 +1,78 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react"
-import { validateName,validateEmail,validatePassword,validateConfirmPassword,validateAccountType } from "../../lib/validation";
+import { validateName, validateEmail, validatePassword, validateConfirmPassword, validateAccountType } from "../../lib/validation";
 
 export default function StaffSignupPage() {
-       const[fields, setFields] = useState({
-                userName: "",
-                email : "",
-                password : "",
-                confirmPassword : "",
-                userType:" ",
-        })
-        const [errors, setErrors] = useState({});
-        const [successMsg, setSuccessMsg] = useState("");
+    const router = useRouter();
+    const [fields, setFields] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        usertype: "",
+    });
+    const [errors, setErrors] = useState({});
+    const [successMsg, setSuccessMsg] = useState("");
 
-        function handleChange(e){
-            //using spread operator to keep existing field values and overwrite only the field that is changed
-            const {name , value } = e.target;
-            setFields((prev) => ({ ...prev, [name]:value}));
+    function handleChange(e) {
+        const { name, value } = e.target;
+        setFields((prev) => ({ ...prev, [name]: value }));
+        setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
 
-            setErrors((prev) => ({ ...prev, [name]: ""}));
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const newErrors = {
+            username: validateName(fields.username),
+            email: validateEmail(fields.email),
+            password: validatePassword(fields.password),
+            confirmPassword: validateConfirmPassword(fields.password, fields.confirmPassword),
+            usertype: validateAccountType(fields.usertype),
+        };
+        setErrors(newErrors);
+        if (newErrors.username || newErrors.email || newErrors.password || newErrors.confirmPassword || newErrors.usertype) return;
+
+        const res = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: fields.username,
+                email: fields.email,
+                password: fields.password,
+                usertype: fields.usertype,
+            }),
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            // TODO: redirect to login page
+            setSuccessMsg("Successfully signed up!");
+            setErrors({});
+        } else {
+            setErrors(result.errors || { global: result.message || "An error occurred" });
         }
-
-        async function handleSubmit(e){
-            e.preventDefault();
-            const newErrors = {
-                userName: validateName(fields.userName),
-                email: validateEmail(fields.email),
-                password: validatePassword (fields.password),
-                confirmPassword: validateConfirmPassword (fields.password,fields.confirmPassword),
-                userType: validateAccountType(fields.userType),
-            };
-            setErrors(newErrors);
-            if(newErrors.name || newErrors.email || newErrors.password || newErrors.confirmPassword || newErrors.role)return;
-
-            // send data to POST for validation (and user signup)
-            const res = await fetch("/api/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(fields),
-            });
-
-            const result = await res.json();
-
-            if (res.ok) {
-                // submission was successful
-                setSuccessMsg("Succesfully signed up!");
-                setErrors({});
-            } else {
-                setErrors(result.errors || {global: result.message || "An error occurred" });
-            }
-        }
+    }
 
     return (
         <main className="auth-page">
-            <form className="auth-form"  onSubmit={handleSubmit}>
-                <h2>Sign Up as Staff </h2>
+            <form className="auth-form" onSubmit={handleSubmit}>
+                <h2>Sign Up as Staff</h2>
+
+                {successMsg && <p className="success">{successMsg}</p>}
+                {errors.global && <span className="error">{errors.global}</span>}
 
                 <label>Full Name</label>
                 <input
                     type="text"
-                    name="userName"
+                    name="username"
                     placeholder="Your Full Name"
-                    value={fields.name}
+                    value={fields.username}
                     onChange={handleChange}
                 />
-                {errors.name && <span className="error">{errors.name}</span>}
+                {errors.username && <span className="error">{errors.username}</span>}
 
                 <label>Email</label>
                 <input
@@ -81,7 +88,7 @@ export default function StaffSignupPage() {
                 <input
                     type="password"
                     name="password"
-                    placeholder="Enter your Password(Min. 8 characters)"
+                    placeholder="Enter your Password (Min. 8 characters)"
                     value={fields.password}
                     onChange={handleChange}
                 />
@@ -97,15 +104,13 @@ export default function StaffSignupPage() {
                 />
                 {errors.confirmPassword && <span className="error">{errors.confirmPassword}</span>}
 
-            
-                <label>I am an...</label>
-                <select name="userType" value={fields.role} onChange={handleChange}>
-                    <option value=""> Select a role</option>
-                    <option value="organizer">Organizer</option>
+                <label>I am a...</label>
+                <select name="usertype" value={fields.usertype} onChange={handleChange}>
+                    <option value="">Select a role</option>
+                    <option value="organiser">Organiser</option>
                     <option value="admin">Admin</option>
                 </select>
-                {errors.role && <span className="error">{errors.role}</span>}
-
+                {errors.usertype && <span className="error">{errors.usertype}</span>}
 
                 <button type="submit">Create Account</button>
 
