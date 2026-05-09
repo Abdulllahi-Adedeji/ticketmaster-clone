@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react"
-import { validateName,validateEmail,validatePassword,validateConfirmPassword } from "../../lib/validation";
+import { validateName,validateEmail,validatePassword,validateConfirmPassword } from "../lib/validation";
 
 export default function SettingsPage(){
     const[fields, setFields] = useState({name :"", email :"", password: "", confirmPassword :""});
