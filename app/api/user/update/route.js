@@ -6,13 +6,13 @@ async function updateUser(id, cleanData){
         await pool.execute(
             ` 
             UPDATE Users
-            SET Username = ?, Email = ?, UserType =?
-            WHERE UserID = ?
+            SET username = ?, email = ?, usertype =?
+            WHERE userID = ?
             `,
             [
                 cleanData.username,
                 cleanData.email,
-                cleanData.userType,
+                cleanData.usertype,
                 id
             ]
         );

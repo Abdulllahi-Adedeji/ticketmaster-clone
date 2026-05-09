@@ -3,11 +3,11 @@ import pool from "../../../lib/db";
 async function searchUsers(query){
     try{
         const[rows] = await pool.execute(
-            `SELECT UserID, Username, Email, UserType
+            `SELECT userID, username, email, usertype
             FROM Users
-            WHERE Username LIKE ? 
-            OR Email LIKE ?
-            OR UserType LIKE ? `,
+            WHERE username LIKE ? 
+            OR email LIKE ?
+            OR usertype LIKE ? `,
             [
                 `%${query}%`,
                 `%${query}%`,
