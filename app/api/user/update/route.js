@@ -1,5 +1,5 @@
-import pool from "../../../../lib/db";
-import { validateUserUpdate, sanitizeUserUpdate } from "../../../../lib/validation";
+import pool from "../../../lib/db";
+import { validateUserUpdate, sanitizeUserUpdate } from "../../../lib/validation";
 
 async function updateUser(id, cleanData){
     try {

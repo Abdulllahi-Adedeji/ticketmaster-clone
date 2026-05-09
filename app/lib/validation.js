@@ -3,6 +3,9 @@
 export function validateUser(data) {
     const errors = {};
 
+    console.log("data to validate:");
+    console.log(data);
+
     if (!data.username || data.username.length > 32) {
         errors.username = "Invalid Username! Must be less than 32 characters.";
     }
