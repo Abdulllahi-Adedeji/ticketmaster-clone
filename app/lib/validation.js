@@ -85,6 +85,14 @@ export function validateEvent(data) {
         errors.venue = "Venue is required.";
     }
 
+    if (!data.genre) {
+        errors.genre = "Genre is required.";
+    }
+
+    if (!data.imgURL) {
+        errors.imgURL = "Image URL is required.";
+    }
+
     if (!data.date) {
         errors.date = "Date is required.";
     } else if (new Date(data.date) < new Date()) {
@@ -121,6 +129,8 @@ export function sanitizeEvent(data) {
         description: clean(data.description) || null,
         location: clean(data.location),
         venue: clean(data.venue),
+        genre: clean(data.genre),
+        imgURL: clean(data.imgURL),
         date: data.date,
         capacity: parseInt(data.capacity),
         price: parseFloat(data.price) || 0.00,
