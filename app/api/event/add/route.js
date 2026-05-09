@@ -25,7 +25,7 @@ async function addEvent(cleanData) {
 
         // insert event
         const [newEvent] = await pool.execute(
-            `INSERT INTO Events (OrganiserID, Name, Description, Location, Venue, Date, Capacity, Price, Status, CreatedAt) 
+            `INSERT INTO Events (OrganiserID, Name, Description, Location, Venue, Genre, ImgURL, Date, Capacity, Price, Status, CreatedAt) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active', NOW())`,
             [
                 cleanData.organiserID,
@@ -33,6 +33,8 @@ async function addEvent(cleanData) {
                 cleanData.description,
                 cleanData.location,
                 cleanData.venue,
+                cleanData.genre,
+                cleanData.imgURL,
                 cleanData.date,
                 cleanData.capacity,
                 cleanData.price,
