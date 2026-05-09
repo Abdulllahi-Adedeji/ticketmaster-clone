@@ -1,4 +1,5 @@
 import pool from "../../../../lib/db";
+import { validateUserUpdate, sanitizeUserUpdate } from "../../../../lib/validation";
 
 async function updateUser(id, cleanData){
     try {
@@ -28,11 +29,16 @@ export async function PUT(request, {params}){
 
         const body = await request.json();
 
-        const cleanData = {
-            username: body.username?.trim(),
-            email: body.email?.trim(),
-            userType: body.userType?.trim()
-        };
+         const validationCheck = validateUserUpdate(body);
+
+        if (!validationCheck.isValid) {
+            return Response.json({
+                errors: validationCheck.errors,
+                values: body,
+            }, { status: 400 });
+        }
+
+        const cleanData = sanitizeUserUpdate(body);
 
         const result = await updateUser(params.id, cleanData);
 

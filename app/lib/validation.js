@@ -121,3 +121,46 @@ export function validateAccountType(value){
     return "";
 }
 
+/* UPDATE validation */
+
+export function validateUserUpdate(data){
+    const errors = {};
+
+    if (!data.username || data.username.length > 32) {
+        errors.username = "Invalid Username! Must be less than 32 characters.";
+    }
+
+    const emailRegex = /[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$/;
+
+    if (!data.email || !emailRegex.test(data.email)) {
+        errors.email = "Invalid email address. Please try again";
+    }
+
+    if (!data.usertype) {
+        errors.usertype = "Please select an account type.";
+    }
+
+     return {
+        isValid: Object.keys(errors).length === 0,
+        errors
+    }
+}
+
+/* UPDATE sanitization */
+
+export function sanitizeUserUpdate(data){
+    
+    const clean = (str) => {
+
+        if (typeof str !== 'string') return str;
+
+        return str .replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    };
+
+    return {
+        username: clean(data.username),
+        email: clean(data.email).toLowerCase(),
+        usertype: clean(data.usertype),
+    }
+}
+
