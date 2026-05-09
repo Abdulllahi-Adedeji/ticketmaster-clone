@@ -137,6 +137,118 @@ export function sanitizeEvent(data) {
     }
 }
 
+/* UPDATE user validation */
+
+export function validateUserUpdate(data){
+    const errors = {};
+
+    if (!data.username || data.username.length > 32) {
+        errors.username = "Invalid Username! Must be less than 32 characters.";
+    }
+
+    const emailRegex = /[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$/;
+
+    if (!data.email || !emailRegex.test(data.email)) {
+        errors.email = "Invalid email address. Please try again";
+    }
+
+    if (!data.usertype) {
+        errors.usertype = "Please select an account type.";
+    }
+
+     return {
+        isValid: Object.keys(errors).length === 0,
+        errors
+    }
+}
+
+/* UPDATE user sanitization */
+
+export function sanitizeUserUpdate(data){
+    
+    const clean = (str) => {
+
+        if (typeof str !== 'string') return str;
+
+        return str .replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    };
+
+    return {
+        username: clean(data.username),
+        email: clean(data.email).toLowerCase(),
+        usertype: clean(data.usertype),
+    }
+}
+
+/* UPDATE Event Validation */
+
+export function validateEventUpdate(data){
+    const errors = {};
+
+    if(!data.name || data.name.length > 100){
+        errors.name = "Event name is required and must be under 100 characters.";
+    }
+
+    if(!data.location){
+        errors.location = "Location is required.";
+    }
+
+    if(!data.venue){
+        errors.venue = "Venue is required.";
+    }
+
+    if(!data.genre){
+        errors.genre = "Genre is required.";
+    }
+
+    if(!data.imgURL){
+        errors.imgURL = "Image URL is required.";
+    }
+
+    if(!data.date){
+        errors.date = "Date is required.";
+    }else if(new Date(data.date) < new Date()){
+        errors.date = "Event date must be in the future";
+    }
+
+    if (!data.capacity || data.capacity < 1) {
+        errors.capacity = "Capacity must be at least 1.";
+    }
+
+    if (data.price < 0) {
+        errors.price = "Price cannot be negative.";
+    }
+
+    return {
+        isValid: Object.keys(errors).length === 0,
+        errors
+    }
+}
+
+/* UPDATE Event Sanitization */
+export function sanitizeEventUpdate(data) {
+
+    const clean = (str) => {
+
+        if (typeof str !== 'string') return str;
+
+        return str
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+    };
+
+    return {
+        name: clean(data.name),
+        location: clean(data.location),
+        venue: clean(data.venue),
+        genre: clean(data.genre),
+        imgURL: clean(data.imgURL),
+        date: data.date,
+        capacity: parseInt(data.capacity),
+        price: parseFloat(data.price) || 0.00,
+    }
+}
+
 /* Frontend Validation */
 
 function sanitize(text) {
@@ -186,48 +298,5 @@ export function validateAccountType(value){
     if(!value) 
         return "Please select an account type.";
     return "";
-}
-
-/* UPDATE validation */
-
-export function validateUserUpdate(data){
-    const errors = {};
-
-    if (!data.username || data.username.length > 32) {
-        errors.username = "Invalid Username! Must be less than 32 characters.";
-    }
-
-    const emailRegex = /[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,}$/;
-
-    if (!data.email || !emailRegex.test(data.email)) {
-        errors.email = "Invalid email address. Please try again";
-    }
-
-    if (!data.usertype) {
-        errors.usertype = "Please select an account type.";
-    }
-
-     return {
-        isValid: Object.keys(errors).length === 0,
-        errors
-    }
-}
-
-/* UPDATE sanitization */
-
-export function sanitizeUserUpdate(data){
-    
-    const clean = (str) => {
-
-        if (typeof str !== 'string') return str;
-
-        return str .replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    };
-
-    return {
-        username: clean(data.username),
-        email: clean(data.email).toLowerCase(),
-        usertype: clean(data.usertype),
-    }
 }
 
