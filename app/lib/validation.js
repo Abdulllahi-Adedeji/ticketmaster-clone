@@ -3,9 +3,6 @@
 export function validateUser(data) {
     const errors = {};
 
-    console.log("data to validate:");
-    console.log(data);
-
     if (!data.username || data.username.length > 32) {
         errors.username = "Invalid Username! Must be less than 32 characters.";
     }
@@ -70,6 +67,63 @@ export function sanitizeLogin(data) {
     return {
         email: clean(data.email).toLowerCase(),
         password: clean(data.password),
+    }
+}
+
+export function validateEvent(data) {
+    const errors = {};
+
+    if (!data.name || data.name.length > 100) {
+        errors.name = "Event name is required and must be under 100 characters.";
+    }
+
+    if (!data.location) {
+        errors.location = "Location is required.";
+    }
+
+    if (!data.venue) {
+        errors.venue = "Venue is required.";
+    }
+
+    if (!data.date) {
+        errors.date = "Date is required.";
+    } else if (new Date(data.date) < new Date()) {
+        errors.date = "Event date must be in the future.";
+    }
+
+    if (!data.capacity || data.capacity < 1) {
+        errors.capacity = "Capacity must be at least 1.";
+    }
+
+    if (data.price < 0) {
+        errors.price = "Price cannot be negative.";
+    }
+
+    if (!data.organiserID) {
+        errors.organiserID = "Organiser ID is required.";
+    }
+
+    return {
+        isValid: Object.keys(errors).length === 0,
+        errors
+    }
+}
+
+export function sanitizeEvent(data) {
+    const clean = (str) => {
+        if (typeof str !== 'string') return str;
+        return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    };
+
+    return {
+        organiserID: data.organiserID,
+        name: clean(data.name),
+        description: clean(data.description) || null,
+        location: clean(data.location),
+        venue: clean(data.venue),
+        date: data.date,
+        capacity: parseInt(data.capacity),
+        price: parseFloat(data.price) || 0.00,
     }
 }
 
