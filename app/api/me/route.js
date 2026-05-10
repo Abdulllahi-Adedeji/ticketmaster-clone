@@ -20,9 +20,9 @@ export async function GET() {
 
     return Response.json({ 
         loggedIn: true, 
-        userID: rows[0].userID,
+        userID: rows[0].UserID,
         username : rows[0].Username,
         role: rows[0].UserType,
      });
-     
+
 }
