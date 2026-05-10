@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
 export default function AttendeeDashboard(){
-    
+
     //this tracks which tab is active
     const [view, setView] = useState("upcoming");
     //stores bookings from database
     const [bookings, setBookings] = useState([]);
 
-    //this it gets the bookings when the page is loaded 
+    //this it gets all the bookings from database  when the page is loaded 
     useEffect(() =>{
         async function loadBookings() {
             const res = await fetch("api/booking/user/me");
