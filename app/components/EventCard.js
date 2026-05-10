@@ -57,7 +57,6 @@ export default function EventCard( {event} ) {
                 <img src={event.imgURL} alt={event.name} />
             </div>
             <div className="event-card-body">
-                <span className="genre-tag">{event.genre}</span>
                 <h3 className="event-title">{event.name}</h3>
                 <p className="event-venue">{event.stadium}</p>
                 <p className="event-date">{formatDate(event.date)}</p>
