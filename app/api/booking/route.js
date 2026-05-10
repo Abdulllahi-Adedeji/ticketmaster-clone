@@ -1,4 +1,5 @@
 import pool from "../../lib/db";
+
 async function createBooking(userID, eventID) {
     try{
         const [user] = await pool.execute(
@@ -82,3 +83,6 @@ export async function POST(request) {
 }
 
 
+export async function GET() {
+    return Response.json({ message: "booking route works" });
+}

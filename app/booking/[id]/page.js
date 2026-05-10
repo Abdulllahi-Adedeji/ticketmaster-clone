@@ -20,6 +20,51 @@ export default function BookingPage({ params }) {
         setSpotsLeft(getSpotsLeft(event))
     }, [id])
 
+    async function handleSubmit(e) {
+        e.preventDefault()
+        console.log("handleSubmit fired") // add this as the very first line
+
+        try {
+            // get data from current user thats logged in
+            const meRes = await fetch("/api/me");
+            const meData = await meRes.json();
+
+            // user is not logged in
+            if (!meData.loggedIn) {
+                // redirect to login page
+                router.push("/sign-up");
+                return;
+            }
+
+            
+            console.log("userID:", meData.userID)
+            console.log("eventID:", event.id)
+
+            // post booking to db
+            // userId, eventId, status
+            const res = await fetch("/api/booking/add", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userID: meData.userID,
+                    eventID: event.id,
+                }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                console.log("Booking failed:", data.error);
+                return;
+            }
+
+            // confirm event
+            setConfirmed(true)
+        } catch (err) {
+            console.log("An error occurred: ", err);
+        }
+    }
+
     // if the event does not exist
     if (!event) {
         return <p className="not-found">Event not found.</p>
@@ -40,11 +85,6 @@ export default function BookingPage({ params }) {
         );
     }
 
-    function handleSubmit(e) {
-        e.preventDefault()
-        setConfirmed(true)
-    }
-
     if (confirmed) {
         return (
         <div className="confirmation">
@@ -52,7 +92,7 @@ export default function BookingPage({ params }) {
             <h2>Booking confirmed!</h2>
             <p>{quantity} ticket{quantity > 1 ? 's' : ''} for <strong>{event.name}</strong></p>
             <p className="confirm-sub">{formatDate(event.date)} · {formatTime(event.date)} · {event.stadium}, {event.location}</p>
-            <Link href="/dashboard" className="confirm-link">Go to my bookings</Link>
+            <Link href="/dashboard/attendee" className="confirm-link">Go to my bookings</Link>
         </div>
         )
     }
@@ -78,7 +118,7 @@ export default function BookingPage({ params }) {
                 <p className="form-hint">{spotsLeft - quantity} tickets remaining after your selection</p>
                 </div>
 
-                <button type="submit" className="submit-btn">Confirm booking</button>
+                <button type="submit" onClick={handleSubmit} className="submit-btn">Confirm booking</button>
                 <p className="form-note">You must be logged in to complete this booking.</p>
             </form>
             </div>
