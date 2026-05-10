@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 export default function AttendeeDashboard(){
+    
     //this tracks which tab is active
     const [view, setView] = useState("upcoming");
     //stores bookings from database
