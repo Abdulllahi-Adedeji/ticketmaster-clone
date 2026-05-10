@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import {validateUserUpdate} from "../../lib/validation";
 import { NextURL } from "next/dist/server/web/next-url";
+
 export default function AdminDashboard(){
     const [view, setView] = useState("display");
     const[users, setUsers] = useState([]);
@@ -38,7 +39,7 @@ export default function AdminDashboard(){
         }
         const res = await res.json();
         if(data.success){
-            setUsers((prev => [...prev {...formData, UserID: data.userID }]));
+            setUsers((prev => [...prev, {...formData, UserID: data.userID }]));
             setFormData({username : "", email: "", usertype: "",});
         }
         
