@@ -8,9 +8,11 @@ export const EVENTS = [
         stadium: "Aviva Stadium",
         date: "2026-08-12T19:30:00",
         capacity: 500,
-        bookedCount: 499,
+        bookedCount: 200,
         price: 65.00,
         status: "active",
+        genre: "Rock",
+        imgURL: "https://placehold.co/400x200",
     },
 
     {
@@ -22,10 +24,28 @@ export const EVENTS = [
         stadium: "Etihad Stadium",
         date: "2026-08-15T18:30:00",
         capacity: 500,
-        bookedCount: 500,
+        bookedCount: 490,
         price: 105.00,
         status: "active",
-    }
+        genre: "Indie",
+        imgURL: "https://placehold.co/400x200",
+    },
+
+    {
+        id: 3,
+        organizerId: 2,
+        name: "Artist 1",
+        description: "Artist Desc",
+        location: "Manchester",
+        stadium: "Ethihad Stadium",
+        date: "2026-08-14T19:30:00",
+        capacity: 500,
+        bookedCount: 500,
+        price: 100.00,
+        status: "active",
+        genre: "Rock",
+        imgURL: "https://placehold.co/400x200",
+    },
 ]
 
 // this helps find a specific event by id
@@ -41,24 +61,24 @@ export function getEventById(id) {
 
 // this calculates the remaining ticket availability
 export function getSpotsLeft(event) {
-  return event.capacity - event.bookedCount;
+    return event.capacity - event.bookedCount;
 }
 
 // this formats each event date for display
 export function formatDate(datetimeStr) {
-  return new Date(datetimeStr).toLocaleDateString('en-IE', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-  });
+    return new Date(datetimeStr).toLocaleDateString('en-IE', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+    });
 }
 
 export function formatTime(datetimeStr) {
-  return new Date(datetimeStr).toLocaleTimeString('en-IE', {
-    hour: '2-digit', minute: '2-digit'
-  });
+    return new Date(datetimeStr).toLocaleTimeString('en-IE', {
+        hour: '2-digit', minute: '2-digit'
+    });
 }
 
 export function formatShortDate(datetimeStr) {
-  return new Date(datetimeStr).toLocaleDateString('en-IE', {
-    day: 'numeric', month: 'short'
-  });
+    return new Date(datetimeStr).toLocaleDateString('en-IE', {
+        day: 'numeric', month: 'short'
+    });
 }
