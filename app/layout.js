@@ -3,8 +3,8 @@ import Navbar from "./components/Navbar"
 import Footer from "./components/Footer"
 
 export const metadata = {
-    title: "Placeholder Name",
-    description: "Babushka",
+    title: "Seatly",
+    description: "Concert Booking Service",
 }
 
 export default function RootLayout({ children }) {
