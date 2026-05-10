@@ -38,9 +38,9 @@ export default function SignInPage(){
             const me = await fetch("/api/me");
             const meData = await me.json();
 
-            if(meData.role === "attendee") router.push("/dashboard/attendee");
-            if(meData.role === "organiser") router.push("/dashboard/organiser");
-            if(meData.role === "admin") router.push("/dashboard/admin");
+            if(meData.usertype === "attendee") router.push("/dashboard/attendee");
+            if(meData.usertype === "organiser") router.push("/dashboard/organiser");
+            if(meData.usertype === "admin") router.push("/dashboard/admin");
     }
 
 return(

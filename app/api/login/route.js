@@ -21,7 +21,6 @@ async function register(cleanData) {
         }
 
         // compare entered password to user password
-        console.log("rows[0]:", rows[0]);
         const passwordMatch = await bcrypt.compare(cleanData.password, rows[0].password)
         if (!passwordMatch) {
             return {
