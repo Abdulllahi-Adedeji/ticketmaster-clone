@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react"
 import { validateName,validateEmail,validatePassword,validateConfirmPassword } from "../lib/validation";
+import "../styles/auth.css"
 
 export default function SettingsPage(){
     const[fields, setFields] = useState({name :"", email :"", password: "", confirmPassword :""});
