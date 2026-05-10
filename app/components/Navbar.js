@@ -7,16 +7,16 @@
     export default function Navbar() {
         const router = useRouter();
         const pathname = usePathname();
-        const [role, setRole] = useState(null);
+        const [usertype, setUserType] = useState(null);
 
         useEffect(() => {
             async function checkSession() {
                 const res = await fetch("/api/me");
                 const data = await res.json();
                 if(data.loggedIn) {
-                    setRole(data.role);
+                    setUserType(data.usertype);
                 } else {
-                    setRole(null);
+                    setUserType(null);
                 }
             }
             checkSession();
@@ -25,13 +25,13 @@
         async function handleDashboard(){
             const res = await fetch ("/api/me");
             const data = await res.json();
-            if(data.role === "attendee") router.push("/dashboard/attendee");
-            if(data.role === "organiser") router.push("/dashboard/organiser");
-            if(data.role === "admin") router.push("/dashboard/admin");
+            if(data.usertype === "attendee") router.push("/dashboard/attendee");
+            if(data.usertype === "organiser") router.push("/dashboard/organiser");
+            if(data.usertype === "admin") router.push("/dashboard/admin");
         }
 
         function LoggedOutLinks() {
-            if (role) {
+            if (usertype) {
                 return null
             }
 
@@ -43,7 +43,7 @@
         }
 
         function LoggedInLinks() {
-            if (!role) { 
+            if (!usertype) { 
                 return null 
             }
 
