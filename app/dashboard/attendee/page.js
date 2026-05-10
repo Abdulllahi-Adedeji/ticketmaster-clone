@@ -10,9 +10,11 @@ export default function AttendeeDashboard(){
     //this it gets all the bookings from database  when the page is loaded 
     useEffect(() =>{
         async function loadBookings() {
-            const res = await fetch("api/booking/user/me");
+            const me = await fetch ("/api/me");
+            const meData = await me.json();
+            const res = await fetch(`/api/booking/user/${meData.userID}`);
             const data =await res.json();
-            setBookings(data.bookings);
+            setBookings(data.bookings || []);
             
         }
             loadBookings();
@@ -20,7 +22,7 @@ export default function AttendeeDashboard(){
     []);
 
     //this handles removing of a booking from the database
-    async function hanldeUnregister(bookingID) {
+    async function handleUnregister(bookingID) {
         const res = await fetch(`/api/booking/${bookingID}`,{method:"DELETE"});
         const data = await res.json();
         if(data.success){
@@ -37,7 +39,7 @@ export default function AttendeeDashboard(){
     const past = bookings.filter((b) => new Date(b.Date) < now);
 
     //displays the changes based on what tab is active
-    const displayed = view ===  " upcoming" ? upcoming :past;
+    const displayed = view ===  "upcoming" ? upcoming :past;
 
 
     return(
@@ -80,7 +82,7 @@ export default function AttendeeDashboard(){
                             {view === "upcoming" && (   
                                 <button
                                     className="delete-btn"
-                                    onClick={()=> hanldeUnregister(bookings.BookingID)}
+                                    onClick={()=> handleUnregister(bookings.BookingID)}
                                 >
                                     Unregister
                                 </button>

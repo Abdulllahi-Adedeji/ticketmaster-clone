@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react"
+import { useRouter } from "next/navigation";
 import {validateEmail,validatePassword} from "../lib/validation";
 export default function SignInPage(){
+    const router = useRouter();
     const[fields, setFields] = useState({email :"", password: ""});
     const[errors, setErrors] = useState({});
 
@@ -13,7 +15,7 @@ export default function SignInPage(){
         setErrors((prev) => ({ ...prev, [name]: ""}));
     }
 
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault();
         const newErrors = {
             email: validateEmail(fields.email),
@@ -21,6 +23,24 @@ export default function SignInPage(){
             };
             setErrors(newErrors);
             if( newErrors.email || newErrors.password)return;
+
+            const res = await fetch("/api/login", {
+                method: "POST",
+                headers :{ "Content-Type": "application/json"},
+                body: JSON.stringify({email:fields.email, password: fields.password}),
+            });
+            const data = await res.json();
+
+            if(!res.ok){
+                setErrors({global :data.message || "An error occured."});
+                return;
+            }
+            const me = await fetch("/api/me");
+            const meData = await me.json();
+
+            if(meData.role === "attendee") router.push("/dashboard/attendee");
+            if(meData.role === "organiser") router.push("/dashboard/organiser");
+            if(meData.role === "admin") router.push("/dashboard/admin");
     }
 
 return(

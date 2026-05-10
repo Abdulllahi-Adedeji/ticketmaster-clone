@@ -1,13 +1,13 @@
 import pool from "../../../../lib/db";
-import { validateUserUpdate, sanitizeUserUpdate } from "../../../lib/validation";
+import { validateUserUpdate, sanitizeUserUpdate } from "../../../../lib/validation";
 
-async function updateUser(id, cleanData){
+async function updateUser(id, cleanData) {
     try {
         await pool.execute(
             ` 
-            UPDATE Users
-            SET username = ?, email = ?, usertype =?
-            WHERE userID = ?
+            UPDATE users
+            SET Username = ?, Email = ?, UserType = ?
+            WHERE UserID = ?
             `,
             [
                 cleanData.username,
@@ -16,20 +16,24 @@ async function updateUser(id, cleanData){
                 id
             ]
         );
+
         return {
             success: true
         };
-    } catch(err){
+
+    } catch (err) {
         throw err;
     }
 }
 
-export async function PUT(request, {params}){
-    try{
+export async function PUT(request, { params }) {
+    try {
+
+        const { id } = await params;
 
         const body = await request.json();
 
-         const validationCheck = validateUserUpdate(body);
+        const validationCheck = validateUserUpdate(body);
 
         if (!validationCheck.isValid) {
             return Response.json({
@@ -39,19 +43,20 @@ export async function PUT(request, {params}){
         }
 
         const cleanData = sanitizeUserUpdate(body);
-
-        const result = await updateUser(params.id, cleanData);
+        
+        const result = await updateUser(id, cleanData);
 
         return Response.json({
             success: result.success,
             message: "Details updated successfully."
-        }, {status: 200});
-    } catch(err){
+        }, { status: 200 });
+
+    } catch (err) {
         console.error(err);
 
         return Response.json(
-            {error: "Internal server error occurred, please try again."},
-            {status: 500}
+            { error: "Internal server error occurred, please try again." },
+            { status: 500 }
         );
     }
 }
