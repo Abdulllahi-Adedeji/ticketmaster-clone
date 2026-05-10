@@ -8,6 +8,7 @@ export default function OrganiserDashboard(){
     const [events, setEvents] = useState([]);
     //stores validation errors
     const [errors, setErrors] = useState({});
+    const [organiserID, setOrganiserID] = useState(null);
 
     const[formData, setFormData] = useState({
         name: "",
@@ -26,7 +27,8 @@ export default function OrganiserDashboard(){
         async function loadEvents() {
             const me = await fetch("/api/me");
             const meData = await me.json();
-            const res = await fetch (`/api/event/search?query=`);
+            setOrganiserID(meData.userID)
+            const res = await fetch (`/api/event/organiser/${meData.userID}`);
             const data =await res.json();
             setEvents(data.events);
         }
@@ -49,9 +51,11 @@ export default function OrganiserDashboard(){
             setErrors(validateCheck.errors);
             return;
         }
+
         const res = await fetch ("/api/event/add",{
             method: "POST",
-            body: JSON.stringify(formData),
+            headers:{"Content-Type": "application/json"},
+            body: JSON.stringify({...formData, organiserID}),
         });
         const data = await res.json();
         if(data.success) {

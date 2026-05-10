@@ -22,7 +22,7 @@ export default function AttendeeDashboard(){
     []);
 
     //this handles removing of a booking from the database
-    async function hanldeUnregister(bookingID) {
+    async function handleUnregister(bookingID) {
         const res = await fetch(`/api/booking/${bookingID}`,{method:"DELETE"});
         const data = await res.json();
         if(data.success){
@@ -82,7 +82,7 @@ export default function AttendeeDashboard(){
                             {view === "upcoming" && (   
                                 <button
                                     className="delete-btn"
-                                    onClick={()=> hanldeUnregister(bookings.BookingID)}
+                                    onClick={()=> handleUnregister(bookings.BookingID)}
                                 >
                                     Unregister
                                 </button>

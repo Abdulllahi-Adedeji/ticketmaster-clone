@@ -1,13 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
-import {validateUserUpdate} from "../../lib/validation";
+import {validateUserUpdate, validateUser} from "../../lib/validation";
+
 export default function AdminDashboard(){
     const [view, setView] = useState("display");
     const[users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const[errors, setErrors] = useState({});
-    const [formData, setFormData] = useState({username :"", email: "", usertype:""});
+    const [formData, setFormData] = useState({username :"", email: "", password: "", usertype:""});
 
      //this it gets  all the users from database when the page is loaded 
      useEffect(() =>{
@@ -30,20 +31,21 @@ export default function AdminDashboard(){
     }
 
     async function  handleAdd() {
-        const validationCheck = validateUserUpdate(formData);
+        const validationCheck = validateUser(formData);
         if(!validationCheck.isValid){
             setErrors(validationCheck.errors);
             return;
         }
         const res = await fetch("/api/register", {
             method:"POST",
+            headers :{"Content-Type": "application/json"},
             body: JSON.stringify(formData),
         })
         const data = await res.json();
 
         if(data.success){
-            setUsers((prev => [...prev, {...formData, UserID: data.userID }]));
-            setFormData({username : "", email: "", usertype: "",});
+            setUsers((prev => [...prev, {...formData, userID: data.userID }]));
+            setFormData({username : "", email: "", password: "", usertype: "",});
         }
         
     }
@@ -59,14 +61,15 @@ export default function AdminDashboard(){
             setErrors(validationCheck.errors);
             return;
         }
-        const res =await fetch (`/api/user/update/${selectedUser.UserID}`,{
+        const res =await fetch (`/api/user/update/${selectedUser.userID}`,{
             method: "PUT",
+            headers :{"Content-Type": "application/json"},
             body: JSON.stringify(formData),
         });
 
         const data = await res.json();
         if(data.success){
-            setUsers((prev) => prev.map((u) => (u.UserID === selectedUser.UserID ? {...u, ...formData} : u)));
+            setUsers((prev) => prev.map((u) => (u.userID === selectedUser.userID ? {...u, ...formData} : u)));
             setSelectedUser(null);
             setFormData({username :"", email : "", usertype: ''});
         }
@@ -77,7 +80,7 @@ export default function AdminDashboard(){
             const res = await fetch (`/api/user/${userID}`, {method: "DELETE"});
             const data = await res.json();
             if(data.success){
-                setUsers((prev) => prev.filter((u) => u.UserID !==userID));
+                setUsers((prev) => prev.filter((u) => u.userID !==userID));
             }
     }
 
@@ -126,7 +129,7 @@ export default function AdminDashboard(){
                         <p> No users Found</p>
                     ) : (
                         users.map((user) => (
-                            <p key={user.UserID}>{user.username} - {user.email} - {user.usertype} </p>
+                            <p key={user.userID}>{user.username} - {user.email} - {user.usertype} </p>
                         ))
                     )}
                 </section>
@@ -143,6 +146,10 @@ export default function AdminDashboard(){
                     <label>Email</label>
                     <input name="email" value={formData.email} onChange={handleFormChange} placeholder="Email" />
                     {errors.email && <span className="error"> {errors.email}</span>}
+
+                    <label>Password</label>
+                    <input name="password" type="password" value={formData.password} onChange={handleFormChange} placeholder="Password" />
+                    {errors.password && <span className="error">{errors.password}</span>}
 
                     <label>Role</label>
                     <select name="usertype" value={formData.usertype} onChange={handleFormChange}>
@@ -166,7 +173,7 @@ export default function AdminDashboard(){
                             <p> No users found.</p>
                         ) : (
                             users.map((user) => (
-                                <p key={user.UserID} onClick={() => selectedUserToEdit(user)}>
+                                <p key={user.userID} onClick={() => selectedUserToEdit(user)}>
                                     {user.username} - {user.email} - {user.usertype}
                                 </p>
                             ))
@@ -205,10 +212,10 @@ export default function AdminDashboard(){
                         onChange={(e) => setSearchQuery(e.target.value)} />
                     
                     {filteredUsers.map((user) => (
-                        <div key={user.UserID}>
+                        <div key={user.userID}>
                             <p> {user.username} - {user.email} - {user.usertype} </p>
-                            
-                            <button className="delete-btn" onClick={() => handleDelete(user.UserID)}> Delete </button>
+
+                            <button className="delete-btn" onClick={() => handleDelete(user.userID)}> Delete </button>
                         </div>
                     ))}
                 </section>
