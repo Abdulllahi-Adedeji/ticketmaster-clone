@@ -3,6 +3,7 @@ import { validateUserUpdate, sanitizeUserUpdate } from "../../../../lib/validati
 
 async function updateUser(id, cleanData) {
     try {
+        //updates user details using user id
         await pool.execute(
             ` 
             UPDATE users
@@ -29,6 +30,7 @@ async function updateUser(id, cleanData) {
 export async function PUT(request, { params }) {
     try {
 
+        //gets user id from route parameters
         const { id } = await params;
 
         const body = await request.json();
@@ -42,8 +44,10 @@ export async function PUT(request, { params }) {
             }, { status: 400 });
         }
 
+        //sanitizes user input
         const cleanData = sanitizeUserUpdate(body);
         
+        //updates user in database
         const result = await updateUser(id, cleanData);
 
         return Response.json({

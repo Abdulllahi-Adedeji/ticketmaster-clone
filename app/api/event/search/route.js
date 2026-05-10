@@ -1,9 +1,10 @@
 import pool from "../../../lib/db";
-
+//searches events using query inputs
 async function searchEvents(query){
     
     try{
 
+        //searches events table using multiple fields
         const[rows] = await pool.execute(
             `
             SELECT
@@ -33,6 +34,7 @@ async function searchEvents(query){
             ]
         );
 
+        //returns matching events
         return {
             success: true,
             events: rows
@@ -45,11 +47,15 @@ async function searchEvents(query){
 export async function GET(request){
 
     try{
+        //gets query parameter from url
         const {searchParams} = new URL(request.url);
+
+        //stores query or empty string
         const query = searchParams.get("query") || "";
         
         const result = await searchEvents(query);
 
+        //sends search results
         return Response.json({
             success: true,
             events: result.events

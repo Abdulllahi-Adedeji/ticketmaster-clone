@@ -5,6 +5,7 @@ async function updateEvent(id, cleanData) {
 
     try {
 
+        //updates selected event using event id
         await pool.execute(
             `
             UPDATE Events
@@ -39,10 +40,12 @@ export async function PUT(request, { params }) {
 
     try {
 
+        //gets event id from route parameters
         const { id } = params;
-
+        
         const body = await request.json();
 
+        //validates the input fields
         const validationCheck = validateEventUpdate(body);
 
         if (!validationCheck.isValid) {
@@ -54,8 +57,10 @@ export async function PUT(request, { params }) {
 
         }
 
+        //sanitizes the event input data
         const cleanData = sanitizeEventUpdate(body);
 
+        //updates event in database
         const result = await updateEvent(id, cleanData);
 
         return Response.json({

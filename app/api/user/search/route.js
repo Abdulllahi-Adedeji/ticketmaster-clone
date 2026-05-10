@@ -1,7 +1,9 @@
 import pool from "../../../lib/db";
 
+//searches users using query inputs
 async function searchUsers(query){
     try{
+        //searches users by username, email and usertype fields
         const[rows] = await pool.execute(
             `SELECT userID, username, email, usertype
             FROM Users
@@ -14,6 +16,7 @@ async function searchUsers(query){
                 `%${query}%`
             ]
         );
+        //returns matching users
         return {
             success: true,
             users: rows
@@ -28,7 +31,10 @@ async function searchUsers(query){
 
 export async function GET(request){
         try {
+            //gets query parameter from url
             const {searchParams} = new URL(request.url);
+
+            //stores either a query or empty string
             const query = searchParams.get("query") || "";
 
             const result = await searchUsers(query);

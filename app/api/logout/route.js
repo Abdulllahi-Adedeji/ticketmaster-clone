@@ -4,8 +4,10 @@ export async function POST() {
 
     try {
 
+        //gets all stored cookies
         const cookieStore = await cookies();
 
+        //removes session cookie to log user out
         cookieStore.delete("session");
 
         return Response.json({
