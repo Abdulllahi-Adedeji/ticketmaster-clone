@@ -103,12 +103,6 @@ function ArtistCard({ artist }) {
     // this checks if all the artists' events are sold out
     const soldOut  = artist.events.every(e => getSpotsLeft(e) === 0)
 
-    // this finds the minimum number of spots left
-    const minSpots = Math.min(...artist.events.map(e => getSpotsLeft(e)))
-
-    // this determines whether there are low number of tickets
-    const lowStock = !soldOut && minSpots <= 15
-
     // this finds the lowest ticket prices
     const minPrice  = Math.min(...artist.events.map(e => e.price))
 
@@ -127,15 +121,6 @@ function ArtistCard({ artist }) {
         return null;
     }
 
-    // a component to show that the artist/show has low number of tickets
-    function LowStockBadge() {
-        if (lowStock) { 
-            return <span className="badge badge-low">Almost gone</span> 
-        }
-
-        return null;
-    }
-
     return (
         <div className={cardClass}>
 
@@ -143,7 +128,6 @@ function ArtistCard({ artist }) {
                 <img src={artist.imgURL} alt={artist.name} />
                 <div className="event-card-badges">
                 <SoldOutBadge />
-                <LowStockBadge />
                 </div>
             </div>
 

@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { getSpotsLeft, formatDate } from "../lib/events"
+import "../styles/home.css";
 
 export default function EventCard( {event} ) {
 
@@ -33,22 +34,38 @@ export default function EventCard( {event} ) {
         }
     }
 
+    function SoldOutBadge() {
+        if (soldOut) {
+            return <span className="badge badge-sold">Sold out</span>;
+        }
+
+        return null;
+    }
+
+    // this shows the sold out badge for the event
+    function lowStockBadge() {
+        if (lowStock) {
+            return <span className="badge badge-low">Almost gone</span>;
+        }
+
+        return null;
+    }
+
     return (
         <div className={cardClass}>
-            <div className="event-card-top">
-                <span className="event-city">{event.location}</span>
-                {soldOut && <span className="badge badge-sold">Sold out</span>}
-                {lowStock && <span className="badge badge-low">Almost gone</span>}
+            <div className="event-card-image">
+                <img src={event.imgURL} alt={event.name} />
             </div>
-            <h3 className="event-title">{event.name}</h3>
-            <p className="event-venue">{event.stadium}</p>
-            <p className="event-date">{formatDate(event.date)}</p>
-            <div className="event-card-bottom">
-                <span className="event-price">€{event.price.toFixed(2)}</span>
-                <Link href={`/events/${event.id}`} className={btnClass} onClick={handleClick}>
-                    {btnText}
-                </Link>
+            <div className="event-card-body">
+                <span className="genre-tag">{event.genre}</span>
+                <h3 className="event-title">{event.name}</h3>
+                <p className="event-venue">{event.stadium}</p>
+                <p className="event-date">{formatDate(event.date)}</p>
+                <div className="event-card-bottom">
+                    <span className="event-price">€{event.price.toFixed(2)}</span>
+                    <Link href={`/events/${event.genre.toLowerCase()}/${event.id}`} className={btnClass} onClick={handleClick}>{btnText}</Link>
+                </div>
             </div>
         </div>
-    )
+    );
 }
