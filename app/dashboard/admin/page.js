@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import {validateUserUpdate, validateUser} from "../../lib/validation";
+import '../../styles/dashboard.css'
 
 export default function AdminDashboard(){
     const [view, setView] = useState("display");

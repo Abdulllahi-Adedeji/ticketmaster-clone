@@ -2,8 +2,13 @@
 import Link from "next/link";
 import { useState } from "react"
 import { validateName, validateEmail, validatePassword, validateConfirmPassword } from "../../lib/validation";
+import { useRouter } from "next/navigation"
+import "../../styles/auth.css"
 
 export default function AtendeeSignupPage() {
+
+    const router = useRouter();
+
     const [fields, setFields] = useState({
         username: "",
         email: "",
@@ -46,7 +51,8 @@ export default function AtendeeSignupPage() {
         const result = await res.json();
 
         if (res.ok) {
-            // TODO: redirect to login page
+            router.refresh();
+            router.push("/sign-in")
             setSuccessMsg("Successfully signed up!");
             setErrors({});
         } else {

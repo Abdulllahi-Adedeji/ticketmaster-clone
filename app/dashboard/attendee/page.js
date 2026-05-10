@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import '../../styles/dashboard.css'
+
 export default function AttendeeDashboard(){
 
     //this tracks which tab is active
@@ -46,7 +48,7 @@ export default function AttendeeDashboard(){
         <main className="dashboard">
             <h1> My Dashboard</h1>
 
-            <div className="dashboard Tabs">
+            <div className="dashboard-tabs">
                 {/* the classname switches between tab-active and tab to highlight what tab is selected
                     when the buttons are click it switched the tab and the value of view from upcoimg to past 
                 */}
@@ -72,7 +74,7 @@ export default function AttendeeDashboard(){
                 ) : (
                     //.map loops through each booking and creates a booking card with its informations
                     displayed.map((bookings) => (
-                        <div key={bookings.BookingID} className="booking-card">
+                        <div key={bookings.BookingID} className="dashboard-booking-card">
                             <h3>{bookings.Name}</h3>
                             <p>{bookings.Venue}- {bookings.Location}</p>
                             {/* to LocalDateString formats the date into a readable string */}

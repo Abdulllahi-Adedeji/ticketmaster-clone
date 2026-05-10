@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState } from "react"
 import { useRouter } from "next/navigation";
 import {validateEmail,validatePassword} from "../lib/validation";
+import "../styles/signin.css";
+
 export default function SignInPage(){
     const router = useRouter();
     const[fields, setFields] = useState({email :"", password: ""});
@@ -35,6 +37,9 @@ export default function SignInPage(){
                 setErrors({global :data.message || "An error occured."});
                 return;
             }
+
+            router.refresh();
+
             const me = await fetch("/api/me");
             const meData = await me.json();
 
@@ -46,9 +51,6 @@ export default function SignInPage(){
 return(
     <main className="page">
     <form className="form" onSubmit={handleSubmit}> 
-        <h1>Master Of Tickets </h1>
-        <p> Book concerts, festivals and stadium events.</p>
-
         <h1> Sign In</h1>
 
         <label>Email</label>
@@ -66,7 +68,7 @@ return(
         <input 
             type="password" 
             name="password"
-            placeholder="Enter your Password(min. 8 characters)"
+            placeholder="Enter your Password (min. 8 characters)"
             value={fields.password}
             onChange={handleChange}
         />
@@ -77,15 +79,9 @@ return(
 
 
         <div className=" bottom-text">
-        <p>
-            Don't have an account ? 
-            <Link href ="/signup" >
-            Sign Up
-            </Link>
-        </p>
-        <p>
-         <Link href="/reset-password"> Forgot password ?</Link>
-        </p>
+            <p>Don't have an account? <Link href ="/signup/attendee" >Sign Up as Attendee</Link></p>
+            <p>Are you staff?{' '}<Link href="/signup/staff">Sign Up as Staff</Link></p>
+            <p><Link href="/reset-password"> Forgot password?</Link></p>
         </div>
 
     </form>

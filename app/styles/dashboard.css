@@ -1,0 +1,177 @@
+.dashboard {
+    width: 100%;
+    padding: 2rem 0;
+}
+
+.dashboard h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #111111;
+}
+
+.dashboard-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.tab {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 99px;
+    background: #ffffff;
+    color: #333333;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.tab:hover {
+    border-color: #6c63ff;
+    color: #6c63ff;
+}
+
+.tab-active {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid #6c63ff;
+    border-radius: 99px;
+    background: #6c63ff;
+    color: #ffffff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.dashboard-section {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-section h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: #111111;
+}
+
+.dashboard-section p {
+    font-size: 0.9rem;
+    color: #666666;
+}
+
+.dashboard-booking-card,
+.dashboard-event-card {
+    background: #f9f9f9;
+    border: 1px solid #eeeeee;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.dashboard-booking-card h3,
+.dashboard-event-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #111111;
+    margin: 0;
+}
+
+.dashboard-booking-card p,
+.dashboard-event-card p {
+    font-size: 0.875rem;
+    color: #666666;
+    margin: 0;
+}
+
+.dashboard-section label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #333333;
+    margin-top: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-section input,
+.dashboard-section select {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #111111;
+    background: #ffffff;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-section input:focus,
+.dashboard-section select:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+.dashboard-section button {
+    margin-top: 1rem;
+    background: #6c63ff;
+    color: #ffffff;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.dashboard-section button:hover {
+    background: #574fd6;
+}
+
+.user-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 0.9rem;
+    color: #333333;
+    cursor: pointer;
+}
+
+.user-row:hover {
+    color: #6c63ff;
+}
+
+.user-row:last-child {
+    border-bottom: none;
+}
+
+.delete-btn {
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem !important;
+}
+
+.delete-btn:hover {
+    background: #fecaca !important;
+}
+
+.error {
+    color: #dc2626;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 0.25rem;
+}
