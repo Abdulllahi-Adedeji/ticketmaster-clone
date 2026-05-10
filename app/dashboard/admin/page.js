@@ -15,7 +15,7 @@ export default function AdminDashboard(){
         async function loadUsers() {
             const res = await fetch("/api/user/search?query=");
             const data =await res.json();
-            setUsers(data.users);
+            setUsers(data.users|| []);
             
         }
             loadUsers();

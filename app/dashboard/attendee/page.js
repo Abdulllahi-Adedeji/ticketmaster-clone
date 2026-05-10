@@ -14,7 +14,7 @@ export default function AttendeeDashboard(){
             const meData = await me.json();
             const res = await fetch(`/api/booking/user/${meData.userID}`);
             const data =await res.json();
-            setBookings(data.bookings);
+            setBookings(data.bookings || []);
             
         }
             loadBookings();
