@@ -74,7 +74,6 @@ export async function POST(request) {
         }, {status: 201});
     }
     catch(err){
-        console.error(err);
         return Response.json(
             { error: "Internal server error occurred, please try again."},
             {status :500}
