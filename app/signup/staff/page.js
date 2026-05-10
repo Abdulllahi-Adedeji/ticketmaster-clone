@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react"
 import { validateName, validateEmail, validatePassword, validateConfirmPassword, validateAccountType } from "../../lib/validation";
+import "../../styles/auth.css"
+
 
 export default function StaffSignupPage() {
     const router = useRouter();
@@ -48,7 +50,8 @@ export default function StaffSignupPage() {
         const result = await res.json();
 
         if (res.ok) {
-            // TODO: redirect to login page
+            router.refresh();
+            router.push("/sign-in")
             setSuccessMsg("Successfully signed up!");
             setErrors({});
         } else {

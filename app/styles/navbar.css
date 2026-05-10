@@ -41,20 +41,40 @@ nav {
     background-color: #6c63ff;
     color: #fff !important;
     padding: 0.4rem 1rem;
-    border-radius: 6px;
+    border-radius: 20px;
+}
+
+.nav-btn:hover {
+    background-color: #574fd6 !important;
+    color: #fff !important;
 }
 
 .nav-logout {
-    background: none;
-    border: 1px solid #e0e0e0;
-    color: #333333;
+    background-color: #dc2626;
+    color: #fff !important;
     padding: 0.4rem 1rem;
     border-radius: 20px;
-    cursor: pointer;
+    border: none;
     font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .nav-logout:hover {
-    border-color: #dc2626;
-    color: #dc2626;
+    background-color: #b91c1c;
+    color: #fff !important;
+}
+
+.nav-dashboard {
+    background: none;
+    border: none;
+    color: #333333;
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+}
+
+.nav-dashboard:hover {
+    color: #6c63ff;
 }

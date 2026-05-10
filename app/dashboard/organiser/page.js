@@ -1,6 +1,8 @@
 "use client";
 import {useState, useEffect } from "react";
 import{validateEventUpdate} from "../../lib/validation";
+import '../../styles/dashboard.css'
+
 export default function OrganiserDashboard(){
     //stores what tab is active
     const [view, setView] = useState("events");
@@ -30,7 +32,7 @@ export default function OrganiserDashboard(){
             setOrganiserID(meData.userID)
             const res = await fetch (`/api/event/organiser/${meData.userID}`);
             const data =await res.json();
-            setEvents(data.events);
+            setEvents(data.events || []);
         }
             loadEvents();
     },
@@ -97,7 +99,7 @@ export default function OrganiserDashboard(){
                     ) : (
                         //loops through each event and creates  an event card with its details
                         events.map((event) => (
-                            <div key = {event.EventID} className="event-card">
+                            <div key = {event.EventID} className="dashboard-event-card">
                                 <h3>{event.Name}</h3>
                                 <p>{event.Venue} - {event.Location}</p>
                                 <p> {new Date (event.Date).toLocaleDateString()}</p>
