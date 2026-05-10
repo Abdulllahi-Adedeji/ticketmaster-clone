@@ -97,7 +97,7 @@ export default function SettingsPage() {
         if (errs.password || errs.confirmPassword) return;
 
         try {
-            const res = await fetch(`/api/user/${user.userID}`, {
+            const res = await fetch(`/api/user/update/${user.userID}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username: user.name, email: user.email, usertype: user.usertype, password: passwordFields.password }),
