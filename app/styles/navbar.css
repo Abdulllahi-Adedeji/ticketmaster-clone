@@ -43,3 +43,18 @@ nav {
     padding: 0.4rem 1rem;
     border-radius: 6px;
 }
+
+.nav-logout {
+    background: none;
+    border: 1px solid #e0e0e0;
+    color: #333333;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.nav-logout:hover {
+    border-color: #dc2626;
+    color: #dc2626;
+}
