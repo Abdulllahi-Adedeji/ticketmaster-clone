@@ -7,14 +7,15 @@ export default function OrganiserDashboard(){
     //stores all events for organiser
     const [events, setEvents] = useState([]);
     //stores validation errors
-    const [errors, setErrors] = useState([]);
+    const [errors, setErrors] = useState({});
+
     const[formData, setFormData] = useState({
         name: "",
         description: "",
         location : "",
         venue : "",
         genre : "",
-        imgURL :"",
+        imgURL :"", 
         date :"",
         capacity : "",
         price : "",
@@ -23,9 +24,9 @@ export default function OrganiserDashboard(){
     //runs when th page loads and is logged in organisers events
     useEffect(() =>{
         async function loadEvents() {
-            const me = await fetch("api/me");
-            const meData = await res.json();
-            const res = await fetch (`/api/event/search ? query =`);
+            const me = await fetch("/api/me");
+            const meData = await me.json();
+            const res = await fetch (`/api/event/search?query=`);
             const data =await res.json();
             setEvents(data.events);
         }
@@ -56,7 +57,7 @@ export default function OrganiserDashboard(){
         if(data.success) {
             setEvents((prev) => [...prev, {...formData, EventID: data.eventID, attendeeCount :0}]);
             setView("events");
-            setFormData({ name: "", description :"", venue: "", genre:"", imgURL: "", capacity: "", price: "",});
+            setFormData({ name: "", description :"", location: "", venue: "", genre:"", imgURL: "", capacity: "", price: "",});
         }       
     }
     //removes event from the database and updates the list
