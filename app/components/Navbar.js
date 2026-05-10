@@ -36,6 +36,7 @@ export default function Navbar() {
                     {!role && <li><Link href="/signup/attendee">Sign Up as Attendee</Link></li>}
                     {!role && <li><Link href="/signup/staff">Sign Up as Staff</Link></li>}
                     {role && <li><Link href="/settings">Settings</Link></li>}
+                    {role && <li><Link href="/logout">Logout</Link></li>}
                 </ul>
             </div>
         </nav>
