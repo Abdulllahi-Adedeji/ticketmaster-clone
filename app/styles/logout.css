@@ -1,5 +1,5 @@
 .logout-page {
-    min-height: 80vh;
+    min-height: 50vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -45,4 +45,10 @@
 
 .logout-card button:hover {
     background: #b91c1c;
+}
+
+@media (max-width: 600px) {
+    .logout-card {
+        padding: 1.5rem;
+    }
 }

@@ -78,3 +78,17 @@ nav {
 .nav-dashboard:hover {
     color: #6c63ff;
 }
+
+@media (max-width: 600px) {
+    .nav-inner {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+}

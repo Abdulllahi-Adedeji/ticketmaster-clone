@@ -228,3 +228,9 @@
     color: #888888;
     margin-top: 0.4rem;
 }
+
+@media (max-width: 700px) {
+    .booking-layout {
+        grid-template-columns: 1fr;
+    }
+}

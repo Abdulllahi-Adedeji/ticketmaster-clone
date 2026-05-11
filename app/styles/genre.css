@@ -198,3 +198,29 @@
     background: #fef3c7;
     color: #92400e;
 }
+
+@media (max-width: 600px) {
+    .filters {
+        flex-direction: column;
+    }
+
+    .event-list-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .event-list-row-action {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .trending-row {
+        flex-direction: column;
+        overflow-x: visible;
+    }
+
+    .trending-row .event-card {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}

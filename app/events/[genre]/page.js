@@ -2,7 +2,7 @@
 
 import { use, useState, useEffect } from "react"
 import Link from "next/link"
-import { EVENTS, getSpotsLeft, formatDate, formatShortDate } from "../../lib/events"
+import { EVENTS, getSpotsLeft, formatShortDate } from "../../lib/events"
 import EventCard from "../../components/EventCard"
 import "../../styles/genre.css"
 
@@ -18,12 +18,15 @@ export default function GenrePage({ params }) {
     const [city, setCity] = useState("");
     const [sort, setSort] = useState("date");
     const [dbEvents, setDbEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         async function loadDbEvents() {
             const res = await fetch(`/api/events?genre=${encodeURIComponent(genre)}`);
             const data = await res.json();
             setDbEvents((data.events || []).filter(e => e.status === "active"));
+            setLoading(false);
         }
         loadDbEvents();
     }, [genre]);
@@ -77,6 +80,15 @@ export default function GenrePage({ params }) {
         .sort((a, b) => getSpotsLeft(a) - getSpotsLeft(b))
         .slice(0, 4);
     
+    if (loading) {
+        return (
+            <div className="genre-page">
+                <Link href="/events" className="back-link">← Back to genres</Link>
+                <p className="no-results">Loading events...</p>
+            </div>
+        );
+    }
+
     if (genreEvents.length === 0) {
         return (
             <div className="genre-page">

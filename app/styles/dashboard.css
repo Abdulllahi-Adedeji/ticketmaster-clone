@@ -1,6 +1,5 @@
 .dashboard {
     width: 100%;
-    padding: 2rem 0;
 }
 
 .dashboard h1 {
@@ -154,19 +153,47 @@
 }
 
 .delete-btn {
-    background: #fee2e2 !important;
-    color: #991b1b !important;
+    background: #fee2e2 ;
+    color: #991b1b ;
     border: none;
     padding: 0.4rem 0.9rem;
     border-radius: 8px;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
-    margin-top: 0.5rem !important;
+    margin-top: 0.5rem ;
 }
 
 .delete-btn:hover {
-    background: #fecaca !important;
+    background: #fecaca ;
+}
+
+.confirm-delete {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.confirm-delete p {
+    font-size: 0.85rem;
+    color: #991b1b;
+    margin: 0;
+}
+
+.cancel-btn {
+    background: #e5e7eb ;
+    color: #374151 ;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
+    background: #d1d5db ;
 }
 
 .error {
@@ -174,4 +201,21 @@
     font-size: 0.8rem;
     display: block;
     margin-bottom: 0.25rem;
+}
+
+@media (max-width: 600px) {
+    .dashboard-tabs {
+        flex-direction: column;
+    }
+
+    .tab, .tab-active {
+        width: 100%;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .booking-card,
+    .event-card {
+        padding: 0.75rem;
+    }
 }
