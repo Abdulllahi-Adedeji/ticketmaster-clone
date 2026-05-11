@@ -213,4 +213,14 @@
         width: 100%;
         justify-content: space-between;
     }
+
+    .trending-row {
+        flex-direction: column;
+        overflow-x: visible;
+    }
+
+    .trending-row .event-card {
+        min-width: 100%;
+        max-width: 100%;
+    }
 }
