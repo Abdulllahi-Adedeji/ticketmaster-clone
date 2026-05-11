@@ -59,7 +59,7 @@
         return (
             <nav>
                 <div className="container nav-inner">
-                <Link href="/" className="nav-logo">Seatly</Link>
+                <Link href="/events" className="nav-logo">Seatly</Link>
                     <ul className="nav-links">
                         <li><Link href="/events">Events</Link></li>
                         <LoggedOutLinks />
