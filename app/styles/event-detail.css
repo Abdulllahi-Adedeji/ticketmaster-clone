@@ -1,0 +1,129 @@
+.event-detail {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.not-found {
+    text-align: center;
+    color: #888888;
+    padding: 4rem 0;
+}
+
+.back-link {
+    color: #6c63ff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.detail-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.35rem;
+    color: #111111;
+}
+
+.detail-sub {
+    color: #666666;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.badge {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 99px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-low  { 
+    background: #fef3c7; 
+    color: #92400e; 
+}
+
+.badge-sold { 
+    background: #fee2e2; 
+    color: #991b1b; 
+}
+
+.detail-body {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.detail-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.info-label {
+    font-size: 0.78rem;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.info-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111111;
+}
+
+.info-value.price {
+    font-size: 1.2rem;
+    color: #6c63ff;
+}
+
+.detail-description {
+    color: #555555;
+    line-height: 1.7;
+    margin-bottom: 1.75rem;
+}
+
+.cta-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #6c63ff;
+    color: #ffffff;
+    padding: 0.8rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+}
+
+.cta-btn:hover {
+    background: #574fd6;
+}
+
+.cta-disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}

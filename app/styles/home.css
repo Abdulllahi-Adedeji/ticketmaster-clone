@@ -1,0 +1,204 @@
+.hero {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+}
+
+.hero h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #111111;
+}
+
+.hero p {
+    color: #666666;
+    font-size: 1.1rem;
+}
+
+.search-bar {
+    display: flex;
+    gap: 0.75rem;
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.65rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #ffffff;
+    color: #111111;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+.search-select {
+    padding: 0.65rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #ffffff;
+    color: #111111;
+    cursor: pointer;
+}
+
+.search-select:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+.events-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%
+}
+
+.results-count {
+    color: #888888;
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
+.no-results {
+    color: #888888;
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.event-card {
+    background: #ffffff;
+    border: 1px solid #eeeeee;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.event-card.sold-out {
+    opacity: 0.6;
+}
+
+.event-card-image {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.event-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.event-card-badges {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    gap: 0.4rem;
+}
+
+.event-card-body {
+    padding: 1rem 1.1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.genre-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.55rem;
+    background: #f0eeff;
+    color: #6c63ff;
+    border-radius: 99px;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.event-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0;
+    color: #111111;
+}
+
+.event-venue {
+    color: #666666;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.event-date {
+    color: #888888;
+    font-size: 0.82rem;
+    margin: 0;
+}
+
+.event-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.6rem;
+}
+
+.event-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #6c63ff;
+}
+
+.book-btn {
+    background: #6c63ff;
+    color: #ffffff;
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.book-btn:hover {
+    background: #574fd6;
+}
+
+.book-btn-disabled {
+    background: #cccccc;
+    pointer-events: none;
+}
+
+.badge {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 99px;
+    font-weight: 600;
+}
+
+.badge-sold {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-low {
+    background: #fef3c7;
+    color: #92400e;
+}
