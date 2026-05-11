@@ -46,3 +46,9 @@
 .logout-card button:hover {
     background: #b91c1c;
 }
+
+@media (max-width: 600px) {
+    .logout-card {
+        padding: 1.5rem;
+    }
+}

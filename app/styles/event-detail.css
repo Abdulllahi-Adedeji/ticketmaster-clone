@@ -127,3 +127,13 @@
     background: #cccccc;
     cursor: not-allowed;
 }
+
+@media (max-width: 600px) {
+    .detail-header {
+        flex-direction: column;
+    }
+
+    .detail-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

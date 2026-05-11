@@ -1,6 +1,5 @@
 .dashboard {
     width: 100%;
-    padding: 2rem 0;
 }
 
 .dashboard h1 {
@@ -202,4 +201,21 @@
     font-size: 0.8rem;
     display: block;
     margin-bottom: 0.25rem;
+}
+
+@media (max-width: 600px) {
+    .dashboard-tabs {
+        flex-direction: column;
+    }
+
+    .tab, .tab-active {
+        width: 100%;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .booking-card,
+    .event-card {
+        padding: 0.75rem;
+    }
 }
