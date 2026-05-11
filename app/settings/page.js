@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { validateEmail, validatePassword, validateConfirmPassword } from "../lib/validation";
+import "../styles/auth.css";
 
 export default function SettingsPage() {
 

@@ -51,7 +51,6 @@
 }
 
 .auth-form button[type="submit"] {
-    margin-top: 1rem;
     background: #6c63ff;
     color: #ffffff;
     border: none;
@@ -91,4 +90,102 @@
     color: #dc2626;
     font-size: 0.8rem;
     margin-bottom: 0.25rem;
+}
+
+.settings-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.settings-field:last-child {
+    border-bottom: none;
+}
+
+.settings-field label {
+    font-size: 0.78rem;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin: 0;
+}
+
+.settings-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111111;
+    margin: 0;
+}
+
+.btn-secondary {
+    background: none;
+    border: 1px solid #e0e0e0;
+    color: #6c63ff;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+    margin-top: 0.25rem;
+}
+
+.btn-secondary:hover {
+    border-color: #6c63ff;
+    background: #f0eeff;
+}
+
+.inline-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.inline-form input {
+    padding: 0.6rem 0.9rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #111111;
+    background: #ffffff;
+    width: 100%;
+}
+
+.inline-form input:focus {
+    outline: none;
+    border-color: #6c63ff;
+}
+
+.inline-form-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    align-items: center;
+}
+
+.inline-form-actions button[type="submit"] {
+    background: #6c63ff;
+    color: #ffffff;
+    border: 1px solid #6c63ff;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.inline-form-actions button[type="submit"]:hover {
+    background: #574fd6;
+    border-color: #574fd6;
+}
+
+.inline-form-actions .btn-secondary {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+    margin: 0;
 }
