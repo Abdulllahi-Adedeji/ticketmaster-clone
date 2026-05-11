@@ -98,7 +98,7 @@ export default function AdminDashboard(){
 
     return (
         <main className="dashboard">
-            <h1> AdminDashboard </h1>
+            <h1> Admin Dashboard </h1>
 
             {/* Tab buttons to switch between the four admin actions */}
             <div className="dashboard-tabs">
