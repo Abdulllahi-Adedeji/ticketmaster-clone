@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./styles/home.css";
 
 // imports the mock event data and the helper functions for it
@@ -10,14 +10,27 @@ import Link from "next/link"
 export default function Home() {
     const [query, setQuery] = useState("");
     const [city, setCity] = useState("");
+    const [dbEvents, setDbEvents] = useState([]);
+
+    useEffect(() => {
+        async function loadDbEvents() {
+            const res = await fetch("/api/events");
+            const data = await res.json();
+            setDbEvents((data.events || []).filter(e => e.status === "active"));
+        }
+        loadDbEvents();
+    }, []);
+
+    const staticIds = new Set(dbEvents.map(e => e.id));
+    const allEvents = [...dbEvents, ...EVENTS.filter(e => !staticIds.has(e.id))];
 
     // creates a unique list of cities from the event data
-    const cities = [...new Set(EVENTS.map(e => e.location))];
+    const cities = [...new Set(allEvents.map(e => e.location))];
 
     // an object used to group events by the artist name
     const artistMap = {};
 
-    EVENTS.forEach(event => {
+    allEvents.forEach(event => {
 
         // this ignores all the inactive events
         if (event.status !== "active") {

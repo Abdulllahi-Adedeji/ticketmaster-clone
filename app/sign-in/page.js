@@ -74,6 +74,8 @@ return(
         />
         {errors.password && <span className="error">{errors.password}</span>}
 
+        {errors.global && <span className="error">{errors.global}</span>}
+
         {/* Sign in button */}
         <button type="submit">Sign In </button>
 

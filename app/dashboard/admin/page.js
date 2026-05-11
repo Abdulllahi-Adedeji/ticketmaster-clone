@@ -11,26 +11,27 @@ export default function AdminDashboard(){
     const[errors, setErrors] = useState({});
     const [formData, setFormData] = useState({username :"", email: "", password: "", usertype:""});
 
-     //this it gets  all the users from database when the page is loaded 
-     useEffect(() =>{
+    // When the page first loads, fetch all users from the database
+    useEffect(() =>{
         async function loadUsers() {
             const res = await fetch("/api/user/search?query=");
             const data =await res.json();
             setUsers(data.users|| []);
-            
+
         }
             loadUsers();
     },
     []);
 
-    //handle input changes and clears errors for that field as user types
+    // Updates the relevant form field as the user types, and clears its error
     function handleFormChange(e){
         const { name, value } = e.target;
-        //using spread operator
+        // Spread the previous values and only overwrite the field that changed
         setFormData((prev => ({...prev, [name]: value})));
         setErrors((prev) => ({ ...prev, [name]: ""}));
     }
 
+    // Validates the form and sends a POST request to register a new user
     async function  handleAdd() {
         const validationCheck = validateUser(formData);
         if(!validationCheck.isValid){
@@ -45,17 +46,20 @@ export default function AdminDashboard(){
         const data = await res.json();
 
         if(data.success){
+            // Add the new user to the local list without reloading the page
             setUsers((prev => [...prev, {...formData, userID: data.userID }]));
             setFormData({username : "", email: "", password: "", usertype: "",});
         }
-        
+
     }
 
+    // Fills the form with the chosen user's current details so the admin can edit them
     function selectedUserToEdit(user){
         setSelectedUser(user);
         setFormData({ username: user.username, email: user.email, usertype:user.usertype});
     }
 
+    // Validates the form and sends a PUT request to update the selected user's details
     async function handleEdit() {
         const validationCheck = validateUserUpdate(formData);
         if(!validationCheck.isValid){
@@ -70,6 +74,7 @@ export default function AdminDashboard(){
 
         const data = await res.json();
         if(data.success){
+            // Replace the old user data in state with the updated values
             setUsers((prev) => prev.map((u) => (u.userID === selectedUser.userID ? {...u, ...formData} : u)));
             setSelectedUser(null);
             setFormData({username :"", email : "", usertype: ''});
@@ -77,6 +82,7 @@ export default function AdminDashboard(){
 
     }
 
+    // Sends a DELETE request and removes the user from the lisst
     async function handleDelete(userID) {
             const res = await fetch (`/api/user/${userID}`, {method: "DELETE"});
             const data = await res.json();
@@ -85,14 +91,16 @@ export default function AdminDashboard(){
             }
     }
 
+    // Filter the user list to only show matched emails
     const filteredUsers = users.filter((u) =>
     u.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    
+
     return (
         <main className="dashboard">
             <h1> AdminDashboard </h1>
 
+            {/* Tab buttons to switch between the four admin actions */}
             <div className="dashboard-tabs">
                 <button
                 className={view === "add" ? "tab-active" : "tab"}
@@ -123,6 +131,7 @@ export default function AdminDashboard(){
                 </button>
             </div>
 
+            {/* List every user in the system */}
             {view === "display" && (
                 <section className="dashboard-section">
                     <h2> All Users</h2>
@@ -136,6 +145,7 @@ export default function AdminDashboard(){
                 </section>
             )}
 
+            {/* Form to create a brand new user account */}
             {view === "add" && (
                 <section className="dashboard-section">
                     <h2> Add Users</h2>
@@ -164,6 +174,7 @@ export default function AdminDashboard(){
                 </section>
             )}
 
+            {/* First show a list of users to pick from, then show the edit form for the chosen user */}
             {view ===  "edit" && (
                 <section className="dashboard-section">
                     <h2>Edit User</h2>
@@ -199,11 +210,13 @@ export default function AdminDashboard(){
                         </select>
                         {errors.usertype && <span className="error">{errors.usertype}</span>}
                         <button onClick={handleEdit}> Save Changes </button>
+                        {/* Cancel goes back to the user selection list */}
                         <button onClick={() => {setSelectedUser(null); setFormData({username: "", email: "", usertype: ""});}}>Cancel</button>
                         </>
                     )}
                 </section>
             )}
+
             {view === "delete" && (
                 <section className="dashboard-section">
                     <h2>Delete User </h2>
@@ -211,7 +224,7 @@ export default function AdminDashboard(){
                         placeholder=" Search by email"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)} />
-                    
+
                     {filteredUsers.map((user) => (
                         <div key={user.userID}>
                             <p> {user.username} - {user.email} - {user.usertype} </p>
