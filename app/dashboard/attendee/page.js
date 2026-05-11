@@ -79,7 +79,7 @@ export default function AttendeeDashboard(){
                             <p>{bookings.Venue}- {bookings.Location}</p>
                             {/* to LocalDateString formats the date into a readable string */}
                             <p>{new Date(bookings.Date).toLocaleDateString()}</p>
-                            <p>€{bookings.Price}</p>
+                            <p>€{bookings.price}</p>
                             {/*  unregister button only shows on upcoming events, not past ones */}
                             {view === "upcoming" && (   
                                 <button

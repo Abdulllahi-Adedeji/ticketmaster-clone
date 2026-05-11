@@ -1,29 +1,41 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import {EVENTS} from "../lib/events";
+import { EVENTS } from "../lib/events";
 import "../styles/events.css";
 
 export default function EventsPage() {
+    const [dbEvents, setDbEvents] = useState([]);
 
-    // this creates a unique list of genres from all the events
-    const genres = [...new Set(EVENTS.map(e => e.genre))]
+    useEffect(() => {
+        async function loadDbEvents() {
+            const res = await fetch("/api/events");
+            const data = await res.json();
+            setDbEvents(data.events || []);
+        }
+        loadDbEvents();
+    }, []);
+
+    // merge static and db events, db takes precedence
+    const staticIds = new Set(dbEvents.map(e => e.id));
+    const allEvents = [...dbEvents, ...EVENTS.filter(e => !staticIds.has(e.id))];
+
+    // unique genres across both sources
+    const genres = [...new Set(allEvents.map(e => e.genre))];
 
     return (
         <div className="events-page">
             <h1 className="events-heading">Browse by genre</h1>
             <div className="genre-grid">
-                {genres.map(genre => <GenreCard key={genre} genre={genre} events={EVENTS} />)}
+                {genres.map(genre => <GenreCard key={genre} genre={genre} events={allEvents} />)}
             </div>
         </div>
-    )
+    );
 }
 
-// a component to represent a single genre card
 function GenreCard({ genre, events }) {
-
-    // this filters events matching the current genre and ensures that only active events are included
     const genreEvents = events.filter(e => e.genre === genre && e.status === "active");
-
-    // this uses the first event as a preview image
     const preview = genreEvents[0];
 
     return (
@@ -36,5 +48,5 @@ function GenreCard({ genre, events }) {
                 </div>
             </div>
         </Link>
-    )
+    );
 }

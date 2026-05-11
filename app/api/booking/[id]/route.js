@@ -15,7 +15,7 @@ async function cancelBooking(bookingID){
         }
 
         await pool.execute(
-            "UPDATE Booking SET Status = 'cancelled' WHERE BookingID =?",
+            "UPDATE Bookings SET Status = 'cancelled' WHERE BookingID =?",
             [bookingID]
         );
         return {success : true};

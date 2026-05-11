@@ -3,7 +3,7 @@ async function getOrganiserEvents(organiserID){
     try{
         const [organiser] = await pool.execute(
             "SELECT UserID FROM Users WHERE UserID =? AND UserType = 'organiser'",
-            [organiser]
+            [organiserID]
         );
 
         if(organiser.length === 0){
@@ -11,7 +11,7 @@ async function getOrganiserEvents(organiserID){
         }
 
         const[events] = await pool.execute(
-            `SELECT EventID, Name, Description, Location, Venue, Genre, ImgURL, Date, Cpacity, Price, Status, CreatedAt
+            `SELECT EventID, Name, Description, Location, Venue, Genre, ImgURL, Date, Capacity, Price, Status, CreatedAt
             FROM Events
             WHERE OrganiserID=?
             ORDER BY Date DESC`,
@@ -30,7 +30,7 @@ export async function GET(request, {params} ) {
         }
         const result = await getOrganiserEvents(id);
         if(!result.success){
-            return Ressponse.json({ message: result.message}, {status: result.status || 400});
+            return Response.json({ message: result.message}, {status: result.status || 400});
         }
         return Response.json({
             success:true,

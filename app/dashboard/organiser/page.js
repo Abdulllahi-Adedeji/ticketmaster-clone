@@ -10,6 +10,7 @@ export default function OrganiserDashboard(){
     const [events, setEvents] = useState([]);
     //stores validation errors
     const [errors, setErrors] = useState({});
+    const [apiError, setApiError] = useState(null);
     const [organiserID, setOrganiserID] = useState(null);
 
     const[formData, setFormData] = useState({
@@ -47,24 +48,26 @@ export default function OrganiserDashboard(){
     }
 
     async function handleCreate() {
-        //validates all forms 
+        setApiError(null);
         const validateCheck = validateEventUpdate(formData);
         if(!validateCheck.isValid){
             setErrors(validateCheck.errors);
             return;
         }
 
-        const res = await fetch ("/api/event/add",{
+        const res = await fetch("/api/event/add", {
             method: "POST",
-            headers:{"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({...formData, organiserID}),
         });
         const data = await res.json();
         if(data.success) {
-            setEvents((prev) => [...prev, {...formData, EventID: data.eventID, attendeeCount :0}]);
+            setEvents((prev) => [...prev, {...formData, EventID: data.eventID, attendeeCount: 0}]);
             setView("events");
-            setFormData({ name: "", description :"", location: "", venue: "", genre:"", imgURL: "", capacity: "", price: "",});
-        }       
+            setFormData({ name: "", description: "", location: "", venue: "", genre: "", imgURL: "", date: "", capacity: "", price: ""});
+        } else {
+            setApiError(data.message || data.error || "Failed to create event. Please try again.");
+        }
     }
     //removes event from the database and updates the list
     async function handleDelete(eventID){
@@ -154,6 +157,7 @@ export default function OrganiserDashboard(){
                     <input name="price"  type="number" value={formData.price} onChange={handleFormChange} placeholder=" Event Price " />
                     {errors.price && <span className="error">{errors.price}</span>}
 
+                    {apiError && <p className="error">{apiError}</p>}
                     <button onClick={handleCreate}>Create Event </button>
                 </section>
             )}

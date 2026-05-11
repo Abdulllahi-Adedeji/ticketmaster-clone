@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react"
+import { use, useState, useEffect } from "react"
 import Link from "next/link"
 import { EVENTS, getSpotsLeft, formatDate, formatShortDate } from "../../lib/events"
 import EventCard from "../../components/EventCard"
@@ -17,9 +17,23 @@ export default function GenrePage({ params }) {
     const [query, setQuery] = useState("");
     const [city, setCity] = useState("");
     const [sort, setSort] = useState("date");
+    const [dbEvents, setDbEvents] = useState([]);
 
-    // this filters events by matching genre and the active statis
-    const genreEvents = EVENTS.filter(e => e.genre.toLowerCase() === genre.toLowerCase() && e.status === "active");
+    useEffect(() => {
+        async function loadDbEvents() {
+            const res = await fetch(`/api/events?genre=${encodeURIComponent(genre)}`);
+            const data = await res.json();
+            setDbEvents((data.events || []).filter(e => e.status === "active"));
+        }
+        loadDbEvents();
+    }, [genre]);
+
+    // static events for this genre
+    const staticEvents = EVENTS.filter(e => e.genre.toLowerCase() === genre.toLowerCase() && e.status === "active");
+
+    // merge: db events take precedence, static events fill in the rest
+    const staticIds = new Set(dbEvents.map(e => e.id));
+    const genreEvents = [...dbEvents, ...staticEvents.filter(e => !staticIds.has(e.id))];
 
     // this creates a unique list of cities from the events
     const cities = [...new Set(genreEvents.map(e => e.location))];
@@ -184,7 +198,7 @@ function EventListRow({ event, genre }) {
             </div>
 
             <div className="event-list-row-action">
-                <span className="event-price">€{event.price.toFixed(2)}</span>
+                <span className="event-price">€{Number(event.price).toFixed(2)}</span>
                 <Link href={`/events/${genre}/${event.id}`} className={btnClass} onClick={handleClick}>View</Link>
             </div>
         </div>

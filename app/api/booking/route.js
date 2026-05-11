@@ -32,18 +32,39 @@ async function createBooking(userID, eventID) {
      
         };
 
-        const [result] = await pool.execute(
-            "Insert INTO Bookings(UserID, EventID, Status, BookedAt) VALUES (?,?, 'confirmed', NOW())",
+        // if a cancelled booking exists for this user+event, reactivate it
+        const [existing] = await pool.execute(
+            "SELECT BookingID FROM Bookings WHERE UserID=? AND EventID=? AND Status='cancelled'",
             [userID, eventID]
         );
-    
+
+        if (existing.length > 0) {
+            await pool.execute(
+                "UPDATE Bookings SET Status='confirmed', BookedAt=NOW() WHERE BookingID=?",
+                [existing[0].BookingID]
+            );
+            return {success: true, bookingID: existing[0].BookingID};
+        }
+
+        // check for an existing confirmed booking
+        const [confirmed] = await pool.execute(
+            "SELECT BookingID FROM Bookings WHERE UserID=? AND EventID=? AND Status='confirmed'",
+            [userID, eventID]
+        );
+
+        if (confirmed.length > 0) {
+            return {success: false, message: "You have already booked this event.", status: 409};
+        }
+
+        const [result] = await pool.execute(
+            "INSERT INTO Bookings(UserID, EventID, Status, BookedAt) VALUES (?,?, 'confirmed', NOW())",
+            [userID, eventID]
+        );
+
         return {success:true, bookingID: result.insertId};
-        
+
     }
     catch(err){
-        if(err.code === 'ER_DUP_ENTRY'){
-            return {success:false, message:"You have already booked this event.", status:409};
-        }
         throw err;
     }
 }

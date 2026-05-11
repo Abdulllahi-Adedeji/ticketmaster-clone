@@ -104,7 +104,7 @@ function ArtistCard({ artist }) {
     const soldOut  = artist.events.every(e => getSpotsLeft(e) === 0)
 
     // this finds the lowest ticket prices
-    const minPrice  = Math.min(...artist.events.map(e => e.price))
+    const minPrice  = Math.min(...artist.events.map(e => Number(e.price)))
 
     let cardClass = "event-card";
 

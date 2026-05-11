@@ -1,56 +1,74 @@
-import { use } from "react"
+"use client"
+
+import { use, useState, useEffect } from "react"
 import Link from "next/link"
 import { getEventById, getSpotsLeft, formatDate, formatTime } from "../../../lib/events"
 import "../../../styles/event-detail.css";
 
-export default function EventDetailPage( {params} ) {
+export default function EventDetailPage({ params }) {
 
-    // this extracts the genre and id from the route params using react's use
+    // this extracts the genre and id from the route params
     const { genre, id } = use(params);
 
-    // this fetches the event object based on the event id
-    const event = getEventById(id);
+    const [event, setEvent] = useState(getEventById(id));
+    const [spotsLeft, setSpotsLeft] = useState(null);
+    const [loading, setLoading] = useState(!getEventById(id));
 
-    // if no events are found, it will display "event not found"
+    useEffect(() => {
+        const staticEvent = getEventById(id);
+
+        // this uses the static event data if it exists
+        if (staticEvent) {
+            setEvent(staticEvent);
+            setSpotsLeft(getSpotsLeft(staticEvent));
+            setLoading(false);
+            return;
+        }
+
+        // this fetches the event from the database if its not in the static list
+        async function loadEvent() {
+            const res = await fetch(`/api/event/${id}`);
+            const data = await res.json();
+            if (data.success) {
+                setEvent(data.event);
+                setSpotsLeft(getSpotsLeft(data.event));
+            }
+            setLoading(false);
+        }
+        loadEvent();
+    }, [id]);
+
+    if (loading) {
+        return <p className="not-found">Loading...</p>
+    }
+
+    // if no event is found display event not found
     if (!event) {
         return <p className="not-found">Event not found.</p>
     }
 
-
-    const spotsLeft = getSpotsLeft(event);
     const soldOut = spotsLeft === 0;
     const lowStock = spotsLeft > 0 && spotsLeft <= 15;
 
-    // component for displaying the ticket availability status
+    // component for displaying ticket availability status
     function StatusBadge() {
-
-        // this shows sold out if there's no available tickets
         if (soldOut) {
             return <span className="badge badge-sold">Sold Out</span>
         }
-
-        // this shows almost gone if tickets are almost gone
         if (lowStock) {
             return <span className="badge badge-low">Almost gone - {spotsLeft} left</span>
         }
-
-        // this returns nothing if tickets are available
         return null;
     }
 
     // component for rendering the ticket action button
     function TicketButton() {
-
-        // this disables the button when the event is sold out
         if (soldOut) {
             return <button className="cta-btn cta-disabled" disabled>Sold out</button>
-
         }
-
-        // this links the button to the booking page if the tickets are available
         return <Link href={`/booking/${event.id}`} className="cta-btn">Get tickets</Link>
     }
-    
+
     return (
         <div className="event-detail">
             <Link href={`/events/${genre}`} className="back-link">← Back to {genre}</Link>
@@ -97,7 +115,7 @@ export default function EventDetailPage( {params} ) {
 
                     <div className="info-block">
                         <span className="info-label">Price</span>
-                        <span className="info-value price">€{event.price.toFixed(2)}</span>
+                        <span className="info-value price">€{Number(event.price).toFixed(2)}</span>
                     </div>
                 </div>
 

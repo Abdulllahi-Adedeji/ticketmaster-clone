@@ -61,7 +61,7 @@ export default function EventCard( {event} ) {
                 <p className="event-venue">{event.stadium}</p>
                 <p className="event-date">{formatDate(event.date)}</p>
                 <div className="event-card-bottom">
-                    <span className="event-price">€{event.price.toFixed(2)}</span>
+                    <span className="event-price">€{Number(event.price).toFixed(2)}</span>
                     <Link href={`/events/${event.genre.toLowerCase()}/${event.id}`} className={btnClass} onClick={handleClick}>{btnText}</Link>
                 </div>
             </div>

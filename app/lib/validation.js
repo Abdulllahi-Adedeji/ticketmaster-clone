@@ -91,6 +91,8 @@ export function validateEvent(data) {
 
     if (!data.imgURL) {
         errors.imgURL = "Image URL is required.";
+    } else if (data.imgURL.length > 255) {
+        errors.imgURL = "Image URL is too long (max 255 characters). Use a shortened URL.";
     }
 
     if (!data.date) {
@@ -203,6 +205,8 @@ export function validateEventUpdate(data){
 
     if(!data.imgURL){
         errors.imgURL = "Image URL is required.";
+    } else if (data.imgURL.length > 255) {
+        errors.imgURL = "Image URL is too long (max 255 characters). Use a shortened URL.";
     }
 
     if(!data.date){

@@ -17,7 +17,7 @@ async function getUserBookings(userID) {
             e.ImgURL, e.Date, e.price, e.Status AS EventStatus
             FROM Bookings b
             JOIN Events e ON b.EventID = e.EventID
-            WHERE b.UserID=?
+            WHERE b.UserID=? AND b.Status = 'confirmed'
             ORDER BY b.BookedAt DESC`,
             [userID]
 
@@ -30,7 +30,7 @@ async function getUserBookings(userID) {
     }
     
 }
-export async function GET(request, {params}) {
+export async function GET(_request, {params}) {
     try{
         const { id } = await params;
         
