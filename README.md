@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ticketmaster Clone
+
+A full-stack event ticketing web application inspired by Ticketmaster. Users can browse events by genre, view event details, book tickets, and manage their account through role-based dashboards for attendees, organisers, and admins.
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **UI:** React
+- **Database:** MySQL (via `mysql2`)
+- **Authentication:** iron-session (session cookies), bcryptjs (password hashing)
+- **Styling:** Plain CSS, split per page/feature
+- **Environment config:** dotenv
+
+## Project Structure
+
+```
+ticketmaster-clone/
+├── app/
+│   ├── api/                  API routes (Next.js route handlers)
+│   │   ├── booking/          Create, fetch and manage bookings
+│   │   ├── event/            Single event fetch, add, update, organiser events, search
+│   │   ├── events/           List all events
+│   │   ├── login/            Login endpoint
+│   │   ├── logout/           Logout endpoint
+│   │   ├── me/               Current session/user info
+│   │   ├── register/         New user registration
+│   │   └── user/             User lookup, search, update
+│   │
+│   ├── booking/[id]/         Booking confirmation/detail page
+│   ├── components/           Shared UI components (Navbar, Footer, EventCard)
+│   ├── dashboard/            Role-based dashboards
+│   │   ├── admin/
+│   │   ├── attendee/
+│   │   └── organiser/
+│   ├── events/                Event listing and detail pages
+│   │   └── [genre]/[id]/      Event detail page, filtered by genre
+│   ├── lib/                   Server-side helpers
+│   │   ├── db.js               MySQL connection pool
+│   │   ├── events.js            Event-related data logic
+│   │   └── validation.js        Input validation helpers
+│   ├── reset-password/        Password reset page
+│   ├── settings/              Account settings page
+│   ├── sign-in/               Sign-in page
+│   ├── signup/                Sign-up flow
+│   │   ├── attendee/
+│   │   └── staff/
+│   ├── styles/                 Page-specific CSS files
+│   ├── layout.js                Root layout
+│   └── page.js                  Home page
+│
+├── public/                   Static assets
+├── sqldump.sql                MySQL schema and seed data
+├── next.config.mjs
+├── jsconfig.json
+└── package.json
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js
+- A running MySQL database
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Setup
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Install dependencies:
+   ```
+   npm install
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Create a MySQL database and import the provided schema:
+   ```
+   mysql -u <user> -p <database_name> < sqldump.sql
+   ```
 
-## Learn More
+3. Create a `.env` file in the project root with your database credentials:
+   ```
+   DB_HOST=your_host
+   DB_USER=your_user
+   DB_PASSWORD=your_password
+   DB_NAME=your_database_name
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run the development server:
+   ```
+   npm run dev
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Features
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Browse events by genre
+- View detailed event pages
+- Book tickets and view booking details
+- User authentication (sign up, sign in, password reset)
+- Role-based dashboards for attendees, organisers, and admins
+- Organiser tools for adding and updating events
+- Search for events and users
